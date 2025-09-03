@@ -7,5 +7,6 @@ import org.springframework.boot.runApplication
 class UtilitiesStarterApplication
 
 fun main(args: Array<String>) {
+  @Suppress("detekt.SpreadOperator")
   runApplication<UtilitiesStarterApplication>(*args)
 }

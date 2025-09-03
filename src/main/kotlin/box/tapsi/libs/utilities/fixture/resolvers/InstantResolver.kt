@@ -21,7 +21,7 @@ class InstantResolver : Resolver {
   )
 
   companion object {
-    private const val RANGE_DAYS = 3650 // 10 years
+    private const val RANGE_DAYS = 3650L // 10 years
     private val referenceTime = Instant.parse("2020-01-01T00:00:00Z")
   }
 }
