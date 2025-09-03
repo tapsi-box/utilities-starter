@@ -1,12 +1,12 @@
 package box.tapsi.libs.utilities.thread.factories
 
 import java.util.concurrent.ThreadFactory as JavaThreadFactory
+import java.util.concurrent.atomic.AtomicInteger
 
-class ThreadFactory(private val prefix: String) : JavaThreadFactory {
-  private var counter = 0
+  private val counter = AtomicInteger(0)
 
   override fun newThread(r: Runnable): Thread {
-    counter++
-    return Thread(r, "$prefix-$counter")
+    val threadNumber = counter.incrementAndGet()
+    return Thread(r, "$prefix-$threadNumber")
   }
 }
