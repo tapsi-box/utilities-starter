@@ -106,3 +106,38 @@ detekt {
   baseline = file("$projectDir/detekt-baseline.xml")
 }
 
+tasks.register("verifyReadmeContent") {
+  doLast {
+    val readmeFile = file("README.md")
+    val content = readmeFile.readText()
+
+    // List of checks
+    val checks = listOf(
+      Check("group ID", """<groupId>${project.group}</groupId>"""),
+      Check("version", """<version>${project.version}</version>"""),
+    )
+
+    val errors = checks.mapNotNull { check ->
+      if (!content.contains(check.expectedValue)) {
+        "Missing or incorrect ${check.name}: ${check.expectedValue}"
+      } else null
+    }
+
+    if (errors.isNotEmpty()) {
+      throw GradleException(
+        """
+                README content verification failed!
+                ${errors.joinToString("\n")}
+                Please update the README.md with correct values
+            """.trimIndent()
+      )
+    }
+  }
+}
+
+tasks.check {
+  dependsOn("verifyReadmeContent")
+}
+
+data class Check(val name: String, val expectedValue: String)
+

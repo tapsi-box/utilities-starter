@@ -54,20 +54,8 @@ Tapsi Utilities Starter is a comprehensive Kotlin library that provides essentia
 <dependency>
     <groupId>box.tapsi.libs</groupId>
     <artifactId>utilities-starter</artifactId>
-    <version>0.0.9</version>
+    <version>0.9.0</version>
 </dependency>
-```
-
-### Gradle (Kotlin DSL)
-
-```kotlin
-implementation("box.tapsi.libs:utilities-starter:0.0.9")
-```
-
-### Gradle (Groovy)
-
-```groovy
-implementation 'box.tapsi.libs:utilities-starter:0.0.9'
 ```
 
 ## Quick Start
