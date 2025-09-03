@@ -27,7 +27,6 @@ class HashServiceImplTest {
     // when
 
     // verify
-    val actualHash = serviceImpl.hash(input, hashAlgorithm)
-    assertEquals(actualHash, expectedHash)
+    assertEquals(expectedHash, actualHash)
   }
 }
