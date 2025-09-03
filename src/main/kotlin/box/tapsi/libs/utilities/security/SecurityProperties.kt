@@ -11,11 +11,11 @@ data class SecurityProperties(
     val jwt: Jwt = Jwt(),
   ) {
     data class Jwt(
-      val secretKey: String = "G1/628+ALOHAMORA+e2/71423134669+P3/141592+SEPEHR+F40+63245986+LS1/079e9kph+VIVA+MATH",
+      val secretKey: String = "CHANGE_ME", // Must be set via external configuration
     )
   }
 
   data class Crypto(
-    val key: String = "G1/628+ALOHAMORA+e2/71423134669+P3/141592+MAHDI+F40+63245986+LS1/079e9kph+VIVA+MATH",
+    val key: String = "CHANGE_ME", // Must be set via external configuration
   )
 }
