@@ -15,12 +15,13 @@ class InstantResolver : Resolver {
   @Suppress("detekt.MagicNumber")
   private fun Context.generateJavaUtilInstant(): Instant = Instant.ofEpochMilli(
     random.nextLong(
-      referenceTime.toEpochMilli() - TimeUnit.DAYS.toMillis(3650),
-      referenceTime.toEpochMilli() + TimeUnit.DAYS.toMillis(3650),
+      referenceTime.toEpochMilli() - TimeUnit.DAYS.toMillis(RANGE_DAYS),
+      referenceTime.toEpochMilli() + TimeUnit.DAYS.toMillis(RANGE_DAYS),
     ),
   )
 
   companion object {
+    private const val RANGE_DAYS = 3650 // 10 years
     private val referenceTime = Instant.parse("2020-01-01T00:00:00Z")
   }
 }
