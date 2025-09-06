@@ -1,0 +1,51 @@
+{
+  "groups": [
+    {
+      "name": "box.libs.utilities.security",
+      "type": "box.tapsi.libs.utilities.security.SecurityProperties",
+      "sourceType": "box.tapsi.libs.utilities.security.SecurityProperties",
+      "description": "Security configuration properties for utilities library"
+    },
+    {
+      "name": "box.libs.utilities.security.crypto",
+      "type": "box.tapsi.libs.utilities.security.SecurityProperties$Crypto",
+      "sourceType": "box.tapsi.libs.utilities.security.SecurityProperties",
+      "sourceMethod": "getCrypto()",
+      "description": "Crypto configuration properties"
+    },
+    {
+      "name": "box.libs.utilities.security.token",
+      "type": "box.tapsi.libs.utilities.security.SecurityProperties$Token",
+      "sourceType": "box.tapsi.libs.utilities.security.SecurityProperties",
+      "sourceMethod": "getToken()",
+      "description": "Token configuration properties"
+    },
+    {
+      "name": "box.libs.utilities.security.token.jwt",
+      "type": "box.tapsi.libs.utilities.security.SecurityProperties$Token$Jwt",
+      "sourceType": "box.tapsi.libs.utilities.security.SecurityProperties$Token",
+      "sourceMethod": "getJwt()",
+      "description": "JWT token configuration properties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "box.libs.utilities.security.crypto.key",
+      "type": "java.lang.String",
+      "sourceType": "box.tapsi.libs.utilities.security.SecurityProperties$Crypto",
+      "description": "Encryption key for crypto operations. Must be set via external configuration.",
+      "defaultValue": "CHANGE_ME"
+    },
+    {
+      "name": "box.libs.utilities.security.token.jwt.secret-key",
+      "type": "java.lang.String",
+      "sourceType": "box.tapsi.libs.utilities.security.SecurityProperties$Token$Jwt",
+      "description": "Secret key for JWT token signing. Must be set via external configuration.",
+      "defaultValue": "CHANGE_ME"
+    }
+  ],
+  "hints": [],
+  "ignored": {
+    "properties": []
+  }
+}

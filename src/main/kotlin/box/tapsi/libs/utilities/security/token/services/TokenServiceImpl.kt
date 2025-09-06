@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
 import javax.crypto.SecretKey
 
 @Timed
-class TokenServiceImpl(
+open class TokenServiceImpl(
   private val timeOperator: TimeOperator,
   private val logger: Logger,
   securityProperties: SecurityProperties,

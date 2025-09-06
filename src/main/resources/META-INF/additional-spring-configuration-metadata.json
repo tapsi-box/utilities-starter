@@ -1,0 +1,60 @@
+{
+  "properties": [
+    {
+      "name": "box.libs.utilities.security.crypto.key",
+      "type": "java.lang.String",
+      "description": "Encryption key for crypto operations. Must be set via external configuration.",
+      "defaultValue": "CHANGE_ME",
+      "deprecation": {
+        "level": "warning",
+        "reason": "This property must be changed from the default value for security reasons."
+      }
+    },
+    {
+      "name": "box.libs.utilities.security.token.jwt.secret-key",
+      "type": "java.lang.String",
+      "description": "Secret key for JWT token signing. Must be set via external configuration.",
+      "defaultValue": "CHANGE_ME",
+      "deprecation": {
+        "level": "warning",
+        "reason": "This property must be changed from the default value for security reasons."
+      }
+    }
+  ],
+  "hints": [
+    {
+      "name": "box.libs.utilities.security.crypto.key",
+      "values": [
+        {
+          "value": "CHANGE_ME",
+          "description": "Default placeholder value - must be changed."
+        }
+      ],
+      "providers": [
+        {
+          "name": "any",
+          "parameters": {
+            "target": "java.lang.String"
+          }
+        }
+      ]
+    },
+    {
+      "name": "box.libs.utilities.security.token.jwt.secret-key",
+      "values": [
+        {
+          "value": "CHANGE_ME",
+          "description": "Default placeholder value - must be changed."
+        }
+      ],
+      "providers": [
+        {
+          "name": "any",
+          "parameters": {
+            "target": "java.lang.String"
+          }
+        }
+      ]
+    }
+  ]
+}

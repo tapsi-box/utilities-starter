@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "box.tapsi.libs"
-version = "0.9.0"
+version = "0.9.1"
 description = "utilities-starter"
 
 repositories {
@@ -23,7 +23,7 @@ dependencies {
   implementation("io.projectreactor:reactor-core:3.7.9")
   implementation("org.springframework.security:spring-security-crypto:6.5.3")
   implementation("io.jsonwebtoken:jjwt-api:0.12.5")
-  implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.0")
+  implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.19.2")
   implementation("io.jsonwebtoken:jjwt-jackson:0.12.5")
   implementation("io.micrometer:micrometer-core:1.15.3")
   implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:1.2.3")
@@ -39,6 +39,7 @@ dependencies {
   testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
 
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
 }
 
 
@@ -59,7 +60,7 @@ mavenPublishing {
 
   pom {
     name.set("utilities-starter")
-    description.set("Tapsi Metrics Core - Reactive Observability Library for Spring Boot Applications.")
+    description.set("Tapsi common utilities starter for Spring Boot applications")
     url.set("https://github.com/tapsi-box/utilities-starter")
     licenses {
       license {
