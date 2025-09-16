@@ -6,3 +6,4 @@ box.tapsi.libs.utilities.security.crypto.autoconfigure.SecurityCryptoAutoConfigu
 box.tapsi.libs.utilities.security.hash.autoconfigure.SecurityHashAutoConfiguration
 box.tapsi.libs.utilities.security.token.autoconfigure.SecurityTokenAutoConfiguration
 box.tapsi.libs.utilities.time.autoconfigure.TimeAutoConfiguration
+box.tapsi.libs.utilities.validator.autoconfigure.ValidatorAutoConfiguration
