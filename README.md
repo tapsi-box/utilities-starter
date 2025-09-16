@@ -9,39 +9,55 @@ Common Infrastructure Utilities for Spring Boot Applications
 
 ## Overview
 
-Tapsi Utilities Starter is a comprehensive Kotlin library that provides essential utilities and extensions for Spring Boot applications. It offers a collection of commonly used functions, security services, reactive programming utilities, and formatting tools to accelerate development and maintain consistency across projects.
+Tapsi Utilities Starter is a comprehensive Kotlin library that provides essential utilities and extensions for Spring
+Boot applications.
+It offers a collection of commonly used functions, security services, reactive programming utilities,
+and formatting tools to accelerate development and maintain consistency across projects.
 
 ## Features
 
 ### 🔧 Common Extensions
+
 - **Type casting utilities** with safe casting operations
 - **Collection extensions** for enhanced data manipulation
 - **String utilities** including Persian/English number conversion
 - **Method reflection utilities** for reactive type detection
 
 ### 🔐 Security Utilities
+
 - **Encryption/Decryption services** with salt support
 - **Hash services** for secure password handling
 - **JWT token utilities** for authentication
 - **Security properties** for configuration management
 
 ### ⚡ Reactive Programming
+
 - **Reactor extensions** for Mono and Flux operations
 - **Context utilities** for reactive context management
 - **CompletableFuture integration** with reactive streams
 - **Tuple extensions** for reactive data handling
 
 ### ⏰ Time Management
+
 - **Time operations** for date/time manipulation
 - **Time value objects** for type-safe time handling
 - **Time extensions** for common time operations
 
 ### 🎨 Formatting & Generation
+
 - **Random code generators** for unique identifiers
 - **Format utilities** for data presentation
 - **Custom formatters** for specialized formatting needs
 
+### ✅ Validation Framework
+
+- **Validator interface** for reactive validation patterns
+- **CompositeValidator** for combining multiple validators
+- **ValidatorFactory** for Spring context-based validator management
+- **Auto-configuration** for seamless validator integration
+
 ### 🚀 Spring Boot Integration
+
 - **Auto-configuration** for seamless integration
 - **Spring context utilities** for dependency injection
 - **Bean management** utilities
@@ -51,10 +67,11 @@ Tapsi Utilities Starter is a comprehensive Kotlin library that provides essentia
 ### Maven
 
 ```xml
+
 <dependency>
     <groupId>box.tapsi.libs</groupId>
     <artifactId>utilities-starter</artifactId>
-    <version>0.9.1</version>
+    <version>0.9.2</version>
 </dependency>
 ```
 
@@ -72,6 +89,7 @@ The library automatically configures necessary beans when included in your class
 
 ```kotlin
 import box.tapsi.libs.utilities.*
+import box.tapsi.libs.utilities.validator.*
 
 // Common extensions
 val castedValue: String = anyObject.castOrThrow<String>()
@@ -96,6 +114,13 @@ lateinit var timeOperator: TimeOperator
 
 val now = timeOperator.now()
 val formattedDate = timeOperator.format(now, "yyyy-MM-dd")
+
+// Validation framework
+@Autowired
+lateinit var validatorFactory: ValidatorFactory
+
+val validator = validatorFactory.getValidator<User>("userValidator", "emailValidator")
+validator.validate(user).subscribe()
 ```
 
 ## Usage Examples
@@ -124,23 +149,23 @@ val isReactive = method.isReturningPublisher() // true if returns Mono/Flux
 ```kotlin
 @Service
 class UserService(
-    private val encryptionService: EncryptionService,
-    private val hashService: HashService
+  private val encryptionService: EncryptionService,
+  private val hashService: HashService
 ) {
-    
-    fun createUser(password: String): User {
-        val salt = encryptionService.generateSalt()
-        val hashedPassword = hashService.hash(password, salt)
-        
-        return User(
-            passwordHash = hashedPassword,
-            salt = salt
-        )
-    }
-    
-    fun verifyPassword(password: String, user: User): Boolean {
-        return hashService.verify(password, user.passwordHash, user.salt)
-    }
+
+  fun createUser(password: String): User {
+    val salt = encryptionService.generateSalt()
+    val hashedPassword = hashService.hash(password, salt)
+
+    return User(
+      passwordHash = hashedPassword,
+      salt = salt
+    )
+  }
+
+  fun verifyPassword(password: String, user: User): Boolean {
+    return hashService.verify(password, user.passwordHash, user.salt)
+  }
 }
 ```
 
@@ -149,13 +174,13 @@ class UserService(
 ```kotlin
 // Mono extensions
 Mono.just("data")
-    .withContext("key", "value")
-    .subscribe()
+  .withContext("key", "value")
+  .subscribe()
 
 // Context utilities
 Mono.deferContextual { ctx ->
-    val userId = ctx.get<String>("userId")
-    getUserById(userId)
+  val userId = ctx.get<String>("userId")
+  getUserById(userId)
 }
 ```
 
@@ -164,16 +189,74 @@ Mono.deferContextual { ctx ->
 ```kotlin
 @Service
 class SchedulingService(
-    private val timeOperator: TimeOperator
+  private val timeOperator: TimeOperator
 ) {
-    
-    fun scheduleTask() {
-        val now = timeOperator.now()
-        val tomorrow = timeOperator.addDays(now, 1)
-        val formatted = timeOperator.format(tomorrow, "yyyy-MM-dd HH:mm:ss")
-        
-        // Schedule logic here
+
+  fun scheduleTask() {
+    val now = timeOperator.now()
+    val tomorrow = timeOperator.addDays(now, 1)
+    val formatted = timeOperator.format(tomorrow, "yyyy-MM-dd HH:mm:ss")
+
+    // Schedule logic here
+  }
+}
+```
+
+### Validation Framework
+
+```kotlin
+// Define custom validators
+@Component("emailValidator")
+class EmailValidator : Validator<User> {
+  override fun validate(input: User): Mono<Void> {
+    return if (input.email.isValidEmail()) {
+      Mono.empty()
+    } else {
+      Mono.error(ValidationException("Invalid email format"))
     }
+  }
+}
+
+@Component("ageValidator")
+class AgeValidator : Validator<User> {
+  override fun validate(input: User): Mono<Void> {
+    return if (input.age >= 18) {
+      Mono.empty()
+    } else {
+      Mono.error(ValidationException("User must be at least 18 years old"))
+    }
+  }
+}
+
+// Use ValidatorFactory to combine validators
+@Service
+class UserService(
+  private val validatorFactory: ValidatorFactory
+) {
+  
+  fun createUser(user: User): Mono<User> {
+    val validator = validatorFactory.getValidator<User>("emailValidator", "ageValidator")
+    
+    return validator.validate(user)
+      .then(Mono.just(user))
+      .doOnNext { saveUser(it) }
+  }
+}
+
+// Manual composite validator usage
+@Service
+class OrderService {
+  
+  fun validateOrder(order: Order): Mono<Void> {
+    val validators = listOf(
+      OrderAmountValidator(),
+      OrderItemValidator(),
+      OrderStatusValidator()
+    )
+    
+    val compositeValidator = CompositeValidator(validators)
+    return compositeValidator.validate(order)
+  }
 }
 ```
 
@@ -200,6 +283,36 @@ The library provides Spring Boot auto-configuration. You can customize behavior 
 2. **Overriding bean definitions** in your configuration
 3. **Using conditional beans** for specific scenarios
 
+### Validator Configuration
+
+The validator framework is automatically configured when the library is included:
+
+```kotlin
+// Validator beans are automatically discovered and registered
+@Component("userValidator")
+class UserValidator : Validator<User> { ... }
+
+@Component("orderValidator") 
+class OrderValidator : Validator<Order> { ... }
+
+// ValidatorFactory is automatically available for injection
+@Service
+class MyService(
+  private val validatorFactory: ValidatorFactory
+) {
+  fun validateUser(user: User) {
+    val validator = validatorFactory.getValidator<User>("userValidator")
+    // Use validator...
+  }
+}
+```
+
+The `ValidatorAutoConfiguration` class automatically:
+- Scans for `Validator` implementations
+- Registers them as Spring beans
+- Provides `ValidatorFactory` for validator management
+- Enables composite validation patterns
+
 ## Testing
 
 The library includes comprehensive test coverage and provides test utilities:
@@ -207,18 +320,46 @@ The library includes comprehensive test coverage and provides test utilities:
 ```kotlin
 @SpringBootTest
 class MyServiceTest {
+
+  @Test
+  fun `should encrypt and decrypt data`() {
+    val encryptionService = EncryptionServiceImpl()
+    val original = "test data"
+    val salt = encryptionService.generateSalt()
+
+    val encrypted = encryptionService.encrypt(original, salt)
+    val decrypted = encryptionService.decrypt(encrypted, salt)
+
+    assertEquals(original, decrypted)
+  }
+
+  @Test
+  fun `should validate user with composite validator`() {
+    val emailValidator = EmailValidator()
+    val ageValidator = AgeValidator()
+    val validators = listOf(emailValidator, ageValidator)
+    val compositeValidator = CompositeValidator(validators)
     
-    @Test
-    fun `should encrypt and decrypt data`() {
-        val encryptionService = EncryptionServiceImpl()
-        val original = "test data"
-        val salt = encryptionService.generateSalt()
-        
-        val encrypted = encryptionService.encrypt(original, salt)
-        val decrypted = encryptionService.decrypt(encrypted, salt)
-        
-        assertEquals(original, decrypted)
-    }
+    val validUser = User(email = "test@example.com", age = 25)
+    
+    compositeValidator.validate(validUser)
+      .test()
+      .verifyComplete()
+  }
+
+  @Test
+  fun `should fail validation for invalid user`() {
+    val emailValidator = EmailValidator()
+    val ageValidator = AgeValidator()
+    val validators = listOf(emailValidator, ageValidator)
+    val compositeValidator = CompositeValidator(validators)
+    
+    val invalidUser = User(email = "invalid-email", age = 16)
+    
+    compositeValidator.validate(invalidUser)
+      .test()
+      .verifyError()
+  }
 }
 ```
 
@@ -266,6 +407,7 @@ This project maintains high code quality standards:
 ## Dependencies
 
 ### Core Dependencies
+
 - **Spring Framework 6.2.10** - Core Spring functionality
 - **Spring Boot 3.5.5** - Auto-configuration support
 - **Reactor Core 3.7.9** - Reactive programming support
@@ -275,6 +417,7 @@ This project maintains high code quality standards:
 - **Micrometer 1.15.3** - Metrics support
 
 ### Test Dependencies
+
 - **JUnit 5** - Testing framework
 - **Spring Boot Test** - Integration testing
 - **Reactor Test** - Reactive testing utilities
@@ -283,8 +426,8 @@ This project maintains high code quality standards:
 ## Version Compatibility
 
 | Library Version | Spring Boot | Kotlin | Java |
-|----------------|-------------|---------|------|
-| 0.0.9          | 3.5.x       | 1.9.23  | 17+  |
+|-----------------|-------------|--------|------|
+| 0.0.9           | 3.5.x       | 1.9.23 | 17+  |
 
 ## License
 

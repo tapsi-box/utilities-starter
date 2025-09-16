@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "box.tapsi.libs"
-version = "0.9.1"
+version = "0.9.2"
 description = "utilities-starter"
 
 repositories {
