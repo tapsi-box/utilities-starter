@@ -2,8 +2,5 @@ box.tapsi.libs.utilities.autoconfigure.UtilitiesAutoConfiguration
 box.tapsi.libs.utilities.format.autoconfigure.FormatAutoConfiguration
 box.tapsi.libs.utilities.logging.autoconfiguration.LoggingAutoConfiguration
 box.tapsi.libs.utilities.security.autoconfigure.SecurityAutoConfiguration
-box.tapsi.libs.utilities.security.crypto.autoconfigure.SecurityCryptoAutoConfigurations
-box.tapsi.libs.utilities.security.hash.autoconfigure.SecurityHashAutoConfiguration
-box.tapsi.libs.utilities.security.token.autoconfigure.SecurityTokenAutoConfiguration
 box.tapsi.libs.utilities.time.autoconfigure.TimeAutoConfiguration
 box.tapsi.libs.utilities.validator.autoconfigure.ValidatorAutoConfiguration

@@ -1,6 +1,5 @@
 package box.tapsi.libs.utilities.time
 
-import org.springframework.stereotype.Component
 import java.time.DayOfWeek
 import java.time.Duration
 import java.time.Instant
@@ -9,7 +8,6 @@ import java.time.LocalTime
 import java.util.concurrent.TimeUnit
 
 @Suppress("TooManyFunctions")
-@Component
 class TimeOperatorImpl : TimeOperator {
   override fun addToCurrentTime(
     offset: Long,

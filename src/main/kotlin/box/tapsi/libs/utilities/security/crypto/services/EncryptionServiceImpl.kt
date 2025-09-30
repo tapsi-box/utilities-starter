@@ -4,9 +4,7 @@ import box.tapsi.libs.utilities.security.SecurityProperties
 import org.springframework.security.crypto.encrypt.Encryptors
 import org.springframework.security.crypto.encrypt.TextEncryptor
 import org.springframework.security.crypto.keygen.StringKeyGenerator
-import org.springframework.stereotype.Service
 
-@Service
 class EncryptionServiceImpl(
   private val securityProperties: SecurityProperties,
   private val stringKeyGenerator: StringKeyGenerator,

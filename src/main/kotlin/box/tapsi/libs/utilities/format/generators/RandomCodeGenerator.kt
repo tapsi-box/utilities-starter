@@ -1,10 +1,8 @@
 package box.tapsi.libs.utilities.format.generators
 
-import org.springframework.stereotype.Component
 import kotlin.math.pow
 import kotlin.random.Random
 
-@Component(RandomCodeGenerator.BEAN_NAME)
 class RandomCodeGenerator : CodeGenerator {
   override fun generate(length: Int, prefix: String?): String = "${preparePrefix(prefix)}-${generateRandomCode(length)}"
 

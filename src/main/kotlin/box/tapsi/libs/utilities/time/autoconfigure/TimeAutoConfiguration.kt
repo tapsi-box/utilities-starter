@@ -1,9 +1,9 @@
 package box.tapsi.libs.utilities.time.autoconfigure
 
-import box.tapsi.libs.utilities.autoconfigure.UtilitiesAutoConfiguration
+import box.tapsi.libs.utilities.time.TimeOperatorImpl
 import org.springframework.boot.autoconfigure.AutoConfiguration
-import org.springframework.context.annotation.ComponentScan
+import org.springframework.context.annotation.Import
 
-@AutoConfiguration(after = [UtilitiesAutoConfiguration::class])
-@ComponentScan("box.tapsi.libs.utilities.time")
+@AutoConfiguration
+@Import(TimeOperatorImpl::class)
 class TimeAutoConfiguration
