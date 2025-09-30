@@ -4,8 +4,6 @@ import box.tapsi.libs.utilities.validator.CompositeValidator
 import box.tapsi.libs.utilities.validator.Validator
 import org.slf4j.Logger
 import org.springframework.context.ApplicationContext
-import org.springframework.stereotype.Component
-
 /**
  * Factory class for managing and retrieving validator beans from the application context.
  * This class scans the application context for beans of type [Validator] and provides
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Component
  * @param logger Used to log warnings when no matching validators are found.
  * @param applicationContext Spring's application context used to fetch validator beans.
  */
-@Component
 class ValidatorFactory(
   private val logger: Logger,
   private val applicationContext: ApplicationContext,
