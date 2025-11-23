@@ -4,6 +4,7 @@ import java.time.DayOfWeek
 import java.time.Duration
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.util.concurrent.TimeUnit
 
@@ -102,6 +103,18 @@ interface TimeOperator {
    * @return the corresponding Instant representation of the provided LocalDate in the specified timezone.
    */
   fun convertLocalDateToInstant(localDate: LocalDate, timezone: SupportedTimezone = SupportedTimezone.Tehran): Instant
+
+  /**
+   * Converts a LocalDateTime to an Instant using the provided timezone.
+   *
+   * @param localDateTime the LocalDateTime object to be converted.
+   * @param timezone the timezone to be used for the conversion. Defaults to SupportedTimezone.Tehran.
+   * @return the corresponding Instant representation of the provided LocalDateTime in the specified timezone.
+   */
+  fun convertLocalDateTimeToInstant(
+    localDateTime: LocalDateTime,
+    timezone: SupportedTimezone = SupportedTimezone.Tehran,
+  ): Instant
 
   /**
    * Retrieves the current local date based on the specified timezone.

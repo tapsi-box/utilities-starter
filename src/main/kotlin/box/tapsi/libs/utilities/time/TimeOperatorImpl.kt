@@ -4,6 +4,7 @@ import java.time.DayOfWeek
 import java.time.Duration
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.util.concurrent.TimeUnit
 
@@ -51,6 +52,11 @@ class TimeOperatorImpl : TimeOperator {
     localDate: LocalDate,
     timezone: SupportedTimezone,
   ): Instant = localDate.atStartOfDay(timezone.asZoneId()).toInstant()
+
+  override fun convertLocalDateTimeToInstant(
+    localDateTime: LocalDateTime,
+    timezone: SupportedTimezone,
+  ): Instant = localDateTime.atZone(timezone.asZoneId()).toInstant()
 
   override fun getCurrentLocalDate(timezone: SupportedTimezone): LocalDate = LocalDate.now(timezone.asZoneId())
 
