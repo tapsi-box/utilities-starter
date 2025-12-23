@@ -2,5 +2,6 @@ box.tapsi.libs.utilities.autoconfigure.UtilitiesAutoConfiguration
 box.tapsi.libs.utilities.format.autoconfigure.FormatAutoConfiguration
 box.tapsi.libs.utilities.logging.autoconfiguration.LoggingAutoConfiguration
 box.tapsi.libs.utilities.security.autoconfigure.SecurityAutoConfiguration
+box.tapsi.libs.utilities.simulator.autoconfigure.SimulatorAutoConfiguration
 box.tapsi.libs.utilities.time.autoconfigure.TimeAutoConfiguration
 box.tapsi.libs.utilities.validator.autoconfigure.ValidatorAutoConfiguration

@@ -26,6 +26,11 @@
       "sourceType": "box.tapsi.libs.utilities.security.SecurityProperties$Token",
       "sourceMethod": "getJwt()",
       "description": "JWT token configuration properties"
+    },
+    {
+      "name": "tapsi.utilities.simulator",
+      "type": "java.lang.Object",
+      "description": "Simulator configuration properties"
     }
   ],
   "properties": [
@@ -42,6 +47,12 @@
       "sourceType": "box.tapsi.libs.utilities.security.SecurityProperties$Token$Jwt",
       "description": "Secret key for JWT token signing. Must be set via external configuration.",
       "defaultValue": "CHANGE_ME"
+    },
+    {
+      "name": "tapsi.utilities.simulator.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Enable simulator functionality. When enabled, provides actuator endpoints for seeding and clearing test data.",
+      "defaultValue": false
     }
   ],
   "hints": [],
