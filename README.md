@@ -56,6 +56,14 @@ and formatting tools to accelerate development and maintain consistency across p
 - **ValidatorFactory** for Spring context-based validator management
 - **Auto-configuration** for seamless validator integration
 
+### 🧪 Simulator Framework
+
+- **DataSimulator** interface for seeding and clearing test data
+- **Seedable** and **Deletable** interfaces for component participation
+- **Actuator endpoints** for HTTP-based simulator operations
+- **Auto-configuration** for seamless integration
+- **Technology-agnostic** design for any data storage solution
+
 ### 🚀 Spring Boot Integration
 
 - **Auto-configuration** for seamless integration
@@ -71,7 +79,7 @@ and formatting tools to accelerate development and maintain consistency across p
 <dependency>
     <groupId>box.tapsi.libs</groupId>
     <artifactId>utilities-starter</artifactId>
-    <version>0.9.4</version>
+    <version>0.9.5</version>
 </dependency>
 ```
 
@@ -90,6 +98,7 @@ The library automatically configures necessary beans when included in your class
 ```kotlin
 import box.tapsi.libs.utilities.*
 import box.tapsi.libs.utilities.validator.*
+import box.tapsi.libs.utilities.simulator.data.*
 
 // Common extensions
 val castedValue: String = anyObject.castOrThrow<String>()
@@ -121,6 +130,16 @@ lateinit var validatorFactory: ValidatorFactory
 
 val validator = validatorFactory.getValidator<User>("userValidator", "emailValidator")
 validator.validate(user).subscribe()
+
+// Simulator framework
+@Autowired
+lateinit var dataSimulator: DataSimulator
+
+// Seed test data
+dataSimulator.seedData().subscribe()
+
+// Clear test data
+dataSimulator.clearData().subscribe()
 ```
 
 ## Usage Examples
@@ -233,10 +252,10 @@ class AgeValidator : Validator<User> {
 class UserService(
   private val validatorFactory: ValidatorFactory
 ) {
-  
+
   fun createUser(user: User): Mono<User> {
     val validator = validatorFactory.getValidator<User>("emailValidator", "ageValidator")
-    
+
     return validator.validate(user)
       .then(Mono.just(user))
       .doOnNext { saveUser(it) }
@@ -246,18 +265,76 @@ class UserService(
 // Manual composite validator usage
 @Service
 class OrderService {
-  
+
   fun validateOrder(order: Order): Mono<Void> {
     val validators = listOf(
       OrderAmountValidator(),
       OrderItemValidator(),
       OrderStatusValidator()
     )
-    
+
     val compositeValidator = CompositeValidator(validators)
     return compositeValidator.validate(order)
   }
 }
+```
+
+### Simulator Framework
+
+```kotlin
+import box.tapsi.libs.utilities.simulator.data.DataSimulator
+import box.tapsi.libs.utilities.simulator.data.seedable.Seedable
+import box.tapsi.libs.utilities.simulator.data.deletable.Deletable
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
+
+// Implement Seedable interface to seed test data
+@Component
+class UserSeeder(
+  private val userRepository: UserRepository
+) : Seedable {
+
+  override fun seed(): Mono<Void> {
+    val testUsers = listOf(
+      User(id = "1", name = "Test User 1", email = "user1@test.com"),
+      User(id = "2", name = "Test User 2", email = "user2@test.com")
+    )
+
+    return Flux.fromIterable(testUsers)
+      .flatMap { userRepository.save(it) }
+      .then()
+  }
+}
+
+// Implement Deletable interface to clear test data
+@Component
+class UserDeleter(
+  private val userRepository: UserRepository
+) : Deletable {
+
+  override fun delete(): Mono<Void> {
+    return userRepository.deleteAll()
+  }
+}
+
+// Use DataSimulator programmatically
+@Service
+class TestDataService(
+  private val dataSimulator: DataSimulator
+) {
+
+  fun setupTestEnvironment(): Mono<Void> {
+    return dataSimulator.seedData()
+  }
+
+  fun cleanupTestEnvironment(): Mono<Void> {
+    return dataSimulator.clearData()
+  }
+}
+
+// Access via Actuator endpoints (when enabled)
+// POST /simulator/seed - Seeds test data
+// POST /simulator/clear - Clears test data
 ```
 
 ## Configuration
@@ -274,6 +351,46 @@ tapsi:
       algorithm: SHA-256
       iterations: 10000
 ```
+
+### Simulator Configuration
+
+The simulator framework is automatically configured when enabled. To enable it, add the following configuration:
+
+**application.yml:**
+
+```yaml
+tapsi:
+  utilities:
+    simulator:
+      enabled: true
+
+# Expose simulator actuator endpoints via HTTP
+management:
+  endpoints:
+    web:
+      exposure:
+        include: simulator
+```
+
+**application.properties:**
+
+```properties
+tapsi.utilities.simulator.enabled=true
+management.endpoints.web.exposure.include=simulator
+```
+
+The `SimulatorAutoConfiguration` class automatically:
+
+- Scans for `Seedable` and `Deletable` implementations
+- Registers them as Spring beans
+- Provides `DataSimulator` for orchestrating seed/clear operations
+- Creates actuator endpoints when actuator is available
+- Only activates when `tapsi.utilities.simulator.enabled=true`
+
+**Important:** The simulator is technology-agnostic and disabled by default. You must implement `Seedable` and
+`Deletable` interfaces for your components to participate in the simulator workflow. The library does not automatically
+discover or delete repositories. **Security Note:** Only enable the simulator in local/dev environments. Never enable it
+in production. Consider securing actuator endpoints with Spring Security when enabled.
 
 ### Auto-Configuration
 
@@ -292,7 +409,7 @@ The validator framework is automatically configured when the library is included
 @Component("userValidator")
 class UserValidator : Validator<User> { ... }
 
-@Component("orderValidator") 
+@Component("orderValidator")
 class OrderValidator : Validator<Order> { ... }
 
 // ValidatorFactory is automatically available for injection
@@ -308,6 +425,7 @@ class MyService(
 ```
 
 The `ValidatorAutoConfiguration` class automatically:
+
 - Scans for `Validator` implementations
 - Registers them as Spring beans
 - Provides `ValidatorFactory` for validator management
@@ -339,9 +457,9 @@ class MyServiceTest {
     val ageValidator = AgeValidator()
     val validators = listOf(emailValidator, ageValidator)
     val compositeValidator = CompositeValidator(validators)
-    
+
     val validUser = User(email = "test@example.com", age = 25)
-    
+
     compositeValidator.validate(validUser)
       .test()
       .verifyComplete()
@@ -353,9 +471,9 @@ class MyServiceTest {
     val ageValidator = AgeValidator()
     val validators = listOf(emailValidator, ageValidator)
     val compositeValidator = CompositeValidator(validators)
-    
+
     val invalidUser = User(email = "invalid-email", age = 16)
-    
+
     compositeValidator.validate(invalidUser)
       .test()
       .verifyError()

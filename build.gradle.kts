@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "box.tapsi.libs"
-version = "0.9.4"
+version = "0.9.5"
 description = "utilities-starter"
 
 repositories {
@@ -30,6 +30,7 @@ dependencies {
   implementation("io.projectreactor.addons:reactor-extra:3.5.2")
   implementation("org.slf4j:slf4j-api:2.0.17")
   implementation("jakarta.annotation:jakarta.annotation-api:3.0.0")
+  implementation("org.springframework.boot:spring-boot-actuator-autoconfigure:3.5.3")
 
   api("com.appmattus.fixture:fixture:1.2.0")
 
