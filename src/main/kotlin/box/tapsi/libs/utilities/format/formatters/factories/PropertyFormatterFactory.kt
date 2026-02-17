@@ -4,6 +4,7 @@ import box.tapsi.libs.utilities.format.formatters.CompositePropertyFormatter
 import box.tapsi.libs.utilities.format.formatters.PropertyFormatter
 import org.slf4j.Logger
 import org.springframework.context.ApplicationContext
+
 class PropertyFormatterFactory(
   private val applicationContext: ApplicationContext,
   private val logger: Logger,
