@@ -4,3 +4,4 @@ box.tapsi.libs.utilities.logging.autoconfiguration.LoggingAutoConfiguration
 box.tapsi.libs.utilities.security.autoconfigure.SecurityAutoConfiguration
 box.tapsi.libs.utilities.time.autoconfigure.TimeAutoConfiguration
 box.tapsi.libs.utilities.validator.autoconfigure.ValidatorAutoConfiguration
+box.tapsi.libs.utilities.context.autoconfigure.ContextAutoConfiguration

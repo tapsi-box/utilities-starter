@@ -1,6 +1,54 @@
 {
   "properties": [
     {
+      "name": "box.libs.utilities.context.user-provider-name",
+      "type": "java.lang.String",
+      "description": "Bean name of the user context data provider.",
+      "defaultValue": "defaultUserProvider"
+    },
+    {
+      "name": "box.libs.utilities.context.grpc-header-keys.x-agent-key",
+      "type": "java.lang.String",
+      "description": "gRPC metadata key for agent identifier.",
+      "defaultValue": "x-agent"
+    },
+    {
+      "name": "box.libs.utilities.context.grpc-header-keys.user-language-key",
+      "type": "java.lang.String",
+      "description": "gRPC metadata key for user language.",
+      "defaultValue": "x-agw-user-language"
+    },
+    {
+      "name": "box.libs.utilities.context.grpc-header-keys.user-ip-key",
+      "type": "java.lang.String",
+      "description": "gRPC metadata key for user IP (e.g. X-Forwarded-For).",
+      "defaultValue": "x-forwarded-for"
+    },
+    {
+      "name": "box.libs.utilities.context.grpc-header-keys.user-id-key",
+      "type": "java.lang.String",
+      "description": "gRPC metadata key for user ID.",
+      "defaultValue": "x-agw-user-id"
+    },
+    {
+      "name": "box.libs.utilities.context.grpc-header-keys.user-role-key",
+      "type": "java.lang.String",
+      "description": "gRPC metadata key for user role.",
+      "defaultValue": "x-agw-user-role"
+    },
+    {
+      "name": "box.libs.utilities.context.grpc-header-keys.user-global-id-key",
+      "type": "java.lang.String",
+      "description": "gRPC metadata key for user global ID.",
+      "defaultValue": "x-agw-user-global-id"
+    },
+    {
+      "name": "box.libs.utilities.context.reactor-context-keys.user-key",
+      "type": "java.lang.String",
+      "description": "Reactor context key for current user.",
+      "defaultValue": "user"
+    },
+    {
       "name": "box.libs.utilities.security.crypto.key",
       "type": "java.lang.String",
       "description": "Encryption key for crypto operations. Must be set via external configuration.",
