@@ -71,7 +71,7 @@ and formatting tools to accelerate development and maintain consistency across p
 <dependency>
     <groupId>box.tapsi.libs</groupId>
     <artifactId>utilities-starter</artifactId>
-    <version>0.9.5-RC1</version>
+    <version>0.9.5</version>
 </dependency>
 ```
 
