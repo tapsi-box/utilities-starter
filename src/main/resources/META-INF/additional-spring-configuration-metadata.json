@@ -1,12 +1,6 @@
 {
   "properties": [
     {
-      "name": "box.libs.utilities.context.user-provider-name",
-      "type": "java.lang.String",
-      "description": "Bean name of the user context data provider.",
-      "defaultValue": "defaultUserProvider"
-    },
-    {
       "name": "box.libs.utilities.context.grpc-header-keys.x-agent-key",
       "type": "java.lang.String",
       "description": "gRPC metadata key for agent identifier.",
@@ -47,6 +41,85 @@
       "type": "java.lang.String",
       "description": "Reactor context key for current user.",
       "defaultValue": "user"
+    },
+    {
+      "name": "box.libs.utilities.context.data-providers",
+      "type": "java.util.Map",
+      "description": "Map of named context data provider configurations."
+    },
+    {
+      "name": "box.libs.utilities.context.data-providers.*.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether this context data provider is enabled.",
+      "defaultValue": false
+    },
+    {
+      "name": "box.libs.utilities.context.data-providers.*.is-user-provider",
+      "type": "java.lang.Boolean",
+      "description": "Whether this provider supplies user context (used as the user context source when enabled).",
+      "defaultValue": false
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether gRPC consumer auto-configuration is enabled.",
+      "defaultValue": true
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.provide-default-channels",
+      "type": "java.lang.Boolean",
+      "description": "Whether to provide default channel beans from configured channels.",
+      "defaultValue": true
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.configure-channels",
+      "type": "java.lang.Boolean",
+      "description": "Whether to configure managed channel beans.",
+      "defaultValue": true
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.channels",
+      "type": "java.util.Map",
+      "description": "Map of named gRPC channel definitions."
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.channels.*.host",
+      "type": "java.lang.String",
+      "description": "gRPC channel host."
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.channels.*.port",
+      "type": "java.lang.Integer",
+      "description": "gRPC channel port."
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.channels.*.retry-attempts",
+      "type": "java.lang.Integer",
+      "description": "Number of retry attempts for the channel.",
+      "defaultValue": 1000
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.channels.*.plaintext",
+      "type": "java.lang.Boolean",
+      "description": "Use plaintext (no TLS) for the channel.",
+      "defaultValue": true
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.clients",
+      "type": "java.util.Map",
+      "description": "Map of named gRPC client stub configurations."
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.clients.*.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether this gRPC client is enabled.",
+      "defaultValue": true
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.clients.*.deadline",
+      "type": "java.time.Duration",
+      "description": "Call deadline for this client.",
+      "defaultValue": "10s"
     },
     {
       "name": "box.libs.utilities.security.crypto.key",

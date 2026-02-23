@@ -3,6 +3,7 @@ package box.tapsi.libs.utilities.context.services
 import box.tapsi.libs.utilities.context.ContextProperties
 import box.tapsi.libs.utilities.context.WorkingContextException
 import box.tapsi.libs.utilities.context.factories.ContextDataProviderFactory
+import box.tapsi.libs.utilities.context.userProviderName
 import box.tapsi.libs.utilities.user.User
 import io.grpc.Metadata
 import org.slf4j.LoggerFactory

@@ -14,8 +14,8 @@ fun <T> Flux<T>.addTraceIdToReactorContext(): Flux<T> = this.contextWrite {
 }
 
 private fun putTraceIdInContext(ctx: Context): Context {
-  if (!ctx.hasKey(LoggerReactorContextKeys.TRACE_ID_KEY)) {
-    return ctx.put(LoggerReactorContextKeys.TRACE_ID_KEY, UUID.randomUUID().toString())
+  if (!ctx.hasKey("trace_id")) {
+    return ctx.put("trace_id", UUID.randomUUID().toString())
   }
   return ctx
 }

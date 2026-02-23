@@ -21,6 +21,33 @@
       "description": "Reactor context key names"
     },
     {
+      "name": "box.libs.utilities.context.data-providers",
+      "type": "box.tapsi.libs.utilities.context.ContextProperties$DataProvider",
+      "sourceType": "box.tapsi.libs.utilities.context.ContextProperties",
+      "sourceMethod": "getDataProviders()",
+      "description": "Named context data provider configurations (enabled flag per provider)"
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer",
+      "type": "box.tapsi.libs.utilities.grpc.consumer.GrpcConsumerProperties",
+      "sourceType": "box.tapsi.libs.utilities.grpc.consumer.GrpcConsumerProperties",
+      "description": "gRPC client/consumer configuration"
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.channels",
+      "type": "box.tapsi.libs.utilities.grpc.consumer.GrpcConsumerProperties$GrpcChannel",
+      "sourceType": "box.tapsi.libs.utilities.grpc.consumer.GrpcConsumerProperties",
+      "sourceMethod": "getChannels()",
+      "description": "Named gRPC channel definitions (host, port, etc.)"
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.clients",
+      "type": "box.tapsi.libs.utilities.grpc.consumer.GrpcConsumerProperties$GrpcClient",
+      "sourceType": "box.tapsi.libs.utilities.grpc.consumer.GrpcConsumerProperties",
+      "sourceMethod": "getClients()",
+      "description": "Named gRPC client stubs (deadline, enabled)"
+    },
+    {
       "name": "box.libs.utilities.security",
       "type": "box.tapsi.libs.utilities.security.SecurityProperties",
       "sourceType": "box.tapsi.libs.utilities.security.SecurityProperties",
@@ -49,13 +76,6 @@
     }
   ],
   "properties": [
-    {
-      "name": "box.libs.utilities.context.user-provider-name",
-      "type": "java.lang.String",
-      "sourceType": "box.tapsi.libs.utilities.context.ContextProperties",
-      "description": "Bean name of the user context data provider.",
-      "defaultValue": "defaultUserProvider"
-    },
     {
       "name": "box.libs.utilities.context.grpc-header-keys.x-agent-key",
       "type": "java.lang.String",
@@ -104,6 +124,99 @@
       "sourceType": "box.tapsi.libs.utilities.context.ContextProperties$ReactorContextKeys",
       "description": "Reactor context key for current user.",
       "defaultValue": "user"
+    },
+    {
+      "name": "box.libs.utilities.context.data-providers",
+      "type": "java.util.Map",
+      "sourceType": "box.tapsi.libs.utilities.context.ContextProperties",
+      "description": "Map of named context data provider configurations."
+    },
+    {
+      "name": "box.libs.utilities.context.data-providers.*.enabled",
+      "type": "java.lang.Boolean",
+      "sourceType": "box.tapsi.libs.utilities.context.ContextProperties$DataProvider",
+      "description": "Whether this context data provider is enabled.",
+      "defaultValue": false
+    },
+    {
+      "name": "box.libs.utilities.context.data-providers.*.is-user-provider",
+      "type": "java.lang.Boolean",
+      "sourceType": "box.tapsi.libs.utilities.context.ContextProperties$DataProvider",
+      "description": "Whether this provider supplies user context (used as the user context source when enabled).",
+      "defaultValue": false
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.enabled",
+      "type": "java.lang.Boolean",
+      "sourceType": "box.tapsi.libs.utilities.grpc.consumer.GrpcConsumerProperties",
+      "description": "Whether gRPC consumer auto-configuration is enabled.",
+      "defaultValue": true
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.provide-default-channels",
+      "type": "java.lang.Boolean",
+      "sourceType": "box.tapsi.libs.utilities.grpc.consumer.GrpcConsumerProperties",
+      "description": "Whether to provide default channel beans from configured channels.",
+      "defaultValue": true
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.configure-channels",
+      "type": "java.lang.Boolean",
+      "sourceType": "box.tapsi.libs.utilities.grpc.consumer.GrpcConsumerProperties",
+      "description": "Whether to configure managed channel beans.",
+      "defaultValue": true
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.channels",
+      "type": "java.util.Map",
+      "sourceType": "box.tapsi.libs.utilities.grpc.consumer.GrpcConsumerProperties",
+      "description": "Map of named gRPC channel definitions."
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.channels.*.host",
+      "type": "java.lang.String",
+      "sourceType": "box.tapsi.libs.utilities.grpc.consumer.GrpcConsumerProperties$GrpcChannel",
+      "description": "gRPC channel host."
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.channels.*.port",
+      "type": "java.lang.Integer",
+      "sourceType": "box.tapsi.libs.utilities.grpc.consumer.GrpcConsumerProperties$GrpcChannel",
+      "description": "gRPC channel port."
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.channels.*.retry-attempts",
+      "type": "java.lang.Integer",
+      "sourceType": "box.tapsi.libs.utilities.grpc.consumer.GrpcConsumerProperties$GrpcChannel",
+      "description": "Number of retry attempts for the channel.",
+      "defaultValue": 1000
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.channels.*.plaintext",
+      "type": "java.lang.Boolean",
+      "sourceType": "box.tapsi.libs.utilities.grpc.consumer.GrpcConsumerProperties$GrpcChannel",
+      "description": "Use plaintext (no TLS) for the channel.",
+      "defaultValue": true
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.clients",
+      "type": "java.util.Map",
+      "sourceType": "box.tapsi.libs.utilities.grpc.consumer.GrpcConsumerProperties",
+      "description": "Map of named gRPC client stub configurations."
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.clients.*.enabled",
+      "type": "java.lang.Boolean",
+      "sourceType": "box.tapsi.libs.utilities.grpc.consumer.GrpcConsumerProperties$GrpcClient",
+      "description": "Whether this gRPC client is enabled.",
+      "defaultValue": true
+    },
+    {
+      "name": "box.libs.utilities.grpc.consumer.clients.*.deadline",
+      "type": "java.time.Duration",
+      "sourceType": "box.tapsi.libs.utilities.grpc.consumer.GrpcConsumerProperties$GrpcClient",
+      "description": "Call deadline for this client.",
+      "defaultValue": "10s"
     },
     {
       "name": "box.libs.utilities.security.crypto.key",
