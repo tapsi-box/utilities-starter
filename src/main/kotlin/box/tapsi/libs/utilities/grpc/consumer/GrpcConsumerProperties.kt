@@ -6,11 +6,10 @@ import java.time.Duration
 @Suppress("detekt.MagicNumber")
 @ConfigurationProperties(prefix = "box.libs.utilities.grpc.consumer")
 data class GrpcConsumerProperties(
-  val enabled: Boolean = true,
+  val enabled: Boolean = false,
   val channels: Map<String, GrpcChannel> = emptyMap(),
   val clients: Map<String, GrpcClient> = emptyMap(),
   val provideDefaultChannels: Boolean = true,
-  val configureChannels: Boolean = true,
 ) {
   data class GrpcChannel(
     val host: String,

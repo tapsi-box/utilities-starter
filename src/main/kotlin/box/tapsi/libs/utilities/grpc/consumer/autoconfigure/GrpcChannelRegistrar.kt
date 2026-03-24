@@ -21,7 +21,7 @@ class GrpcChannelRegistrar(
   private val createdChannels = ConcurrentHashMap<String, ManagedChannel>()
 
   override fun postProcessBeanDefinitionRegistry(registry: BeanDefinitionRegistry) {
-    props.clients.forEach { (name, _) ->
+    props.channels.forEach { (name, _) ->
       val cfg = GrpcChannelHelper.getGrpcChannelOrMaybeDefault(consumerProperties = props, channelName = name)
       if (registry.containsBeanDefinition(name)) return@forEach
 

@@ -150,20 +150,13 @@
       "type": "java.lang.Boolean",
       "sourceType": "box.tapsi.libs.utilities.grpc.consumer.GrpcConsumerProperties",
       "description": "Whether gRPC consumer auto-configuration is enabled.",
-      "defaultValue": true
+      "defaultValue": false
     },
     {
       "name": "box.libs.utilities.grpc.consumer.provide-default-channels",
       "type": "java.lang.Boolean",
       "sourceType": "box.tapsi.libs.utilities.grpc.consumer.GrpcConsumerProperties",
       "description": "Whether to provide default channel beans from configured channels.",
-      "defaultValue": true
-    },
-    {
-      "name": "box.libs.utilities.grpc.consumer.configure-channels",
-      "type": "java.lang.Boolean",
-      "sourceType": "box.tapsi.libs.utilities.grpc.consumer.GrpcConsumerProperties",
-      "description": "Whether to configure managed channel beans.",
       "defaultValue": true
     },
     {
