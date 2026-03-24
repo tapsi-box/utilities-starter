@@ -30,7 +30,7 @@ import java.lang.annotation.Inherited
 @ConditionalOnProperty(
   prefix = "box.libs.utilities.grpc.consumer.clients",
   havingValue = "true",
-  matchIfMissing = true,
+  matchIfMissing = false,
 )
 annotation class OnGrpcClientEnabled(
   @get:AliasFor(annotation = ConditionalOnProperty::class)

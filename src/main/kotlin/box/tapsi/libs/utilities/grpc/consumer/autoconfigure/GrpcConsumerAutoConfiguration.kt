@@ -22,7 +22,7 @@ import org.springframework.core.env.Environment
   prefix = "box.libs.utilities.grpc.consumer",
   name = ["enabled"],
   havingValue = "true",
-  matchIfMissing = true,
+  matchIfMissing = false,
 )
 class GrpcConsumerAutoConfiguration {
   @Bean
@@ -30,7 +30,7 @@ class GrpcConsumerAutoConfiguration {
     environment: Environment,
     interceptors: List<ClientInterceptor>,
   ): GrpcChannelRegistrar {
-    val props = Binder.get(environment).bind<GrpcConsumerProperties>(
+    val props = Binder.get(environment).bind(
       "box.libs.utilities.grpc.consumer",
       GrpcConsumerProperties::class.java,
     ).orElseThrow {

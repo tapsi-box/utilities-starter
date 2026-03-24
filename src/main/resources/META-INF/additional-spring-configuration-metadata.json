@@ -63,18 +63,12 @@
       "name": "box.libs.utilities.grpc.consumer.enabled",
       "type": "java.lang.Boolean",
       "description": "Whether gRPC consumer auto-configuration is enabled.",
-      "defaultValue": true
+      "defaultValue": false
     },
     {
       "name": "box.libs.utilities.grpc.consumer.provide-default-channels",
       "type": "java.lang.Boolean",
       "description": "Whether to provide default channel beans from configured channels.",
-      "defaultValue": true
-    },
-    {
-      "name": "box.libs.utilities.grpc.consumer.configure-channels",
-      "type": "java.lang.Boolean",
-      "description": "Whether to configure managed channel beans.",
       "defaultValue": true
     },
     {
