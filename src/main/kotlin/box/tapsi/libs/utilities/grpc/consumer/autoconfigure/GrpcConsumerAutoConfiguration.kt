@@ -2,13 +2,10 @@ package box.tapsi.libs.utilities.grpc.consumer.autoconfigure
 
 import box.tapsi.libs.utilities.autoconfigure.UtilitiesAutoConfiguration
 import box.tapsi.libs.utilities.grpc.consumer.GrpcConsumerProperties
-import io.grpc.ClientInterceptor
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.context.properties.EnableConfigurationProperties
-import org.springframework.boot.context.properties.bind.Binder
-import org.springframework.context.annotation.Bean
-import org.springframework.core.env.Environment
+import org.springframework.context.annotation.Import
 
 @AutoConfiguration(
   after = [
@@ -24,19 +21,5 @@ import org.springframework.core.env.Environment
   havingValue = "true",
   matchIfMissing = false,
 )
-class GrpcConsumerAutoConfiguration {
-  @Bean
-  fun grpcChannelRegistrar(
-    environment: Environment,
-    interceptors: List<ClientInterceptor>,
-  ): GrpcChannelRegistrar {
-    val props = Binder.get(environment).bind(
-      "box.libs.utilities.grpc.consumer",
-      GrpcConsumerProperties::class.java,
-    ).orElseThrow {
-      IllegalStateException("Failed to bind GrpcConsumerProperties from environment")
-    }
-
-    return GrpcChannelRegistrar(props, interceptors)
-  }
-}
+@Import(GrpcChannelRegistrar::class)
+class GrpcConsumerAutoConfiguration
