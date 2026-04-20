@@ -68,7 +68,7 @@ jobs:
           fi
 
       - name: Publish to Maven Central (Central SonarType)
-        run: ./gradlew publishToMavenCentral
+        run: ./gradlew publishAndReleaseToMavenCentral
         env:
           # GPG Signing credentials
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
