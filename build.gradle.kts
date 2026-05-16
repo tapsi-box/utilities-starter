@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "box.tapsi.libs"
-version = "0.9.7"
+version = "0.9.8"
 description = "utilities-starter"
 
 repositories {
@@ -40,6 +40,7 @@ dependencies {
   testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
 
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+  testRuntimeOnly("io.jsonwebtoken:jjwt-impl:0.12.5")
 
 }
 
