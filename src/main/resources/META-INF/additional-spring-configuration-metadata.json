@@ -134,6 +134,24 @@
         "level": "warning",
         "reason": "This property must be changed from the default value for security reasons."
       }
+    },
+    {
+      "name": "box.libs.utilities.security.token.compression.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether automatic DEFLATE compression of JWT payloads is enabled.",
+      "defaultValue": false
+    },
+    {
+      "name": "box.libs.utilities.security.token.compression.threshold-bytes",
+      "type": "java.lang.Integer",
+      "description": "Minimum serialized payload size in bytes before compression is attempted.",
+      "defaultValue": 512
+    },
+    {
+      "name": "box.libs.utilities.security.token.compression.level",
+      "type": "java.lang.Integer",
+      "description": "DEFLATE compression level: -1 for default, 0 to disable at algorithm level, 1 (fastest) to 9 (smallest).",
+      "defaultValue": -1
     }
   ],
   "hints": [
