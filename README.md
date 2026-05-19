@@ -71,7 +71,7 @@ and formatting tools to accelerate development and maintain consistency across p
 <dependency>
     <groupId>box.tapsi.libs</groupId>
     <artifactId>utilities-starter</artifactId>
-    <version>0.9.7</version>
+    <version>0.9.8</version>
 </dependency>
 ```
 
@@ -265,14 +265,19 @@ class OrderService {
 ### Security Properties
 
 ```yaml
-tapsi:
-  security:
-    crypto:
-      algorithm: AES
-      key-size: 256
-    hash:
-      algorithm: SHA-256
-      iterations: 10000
+box:
+  libs:
+    utilities:
+      security:
+        crypto:
+          key: "<encryption-key>"
+        token:
+          jwt:
+            secret-key: "<base64-encoded-256-bit-key>"
+          compression:
+            enabled: true
+            threshold-bytes: 512  # compress payloads larger than this (bytes)
+            level: -1             # -1 = default, 0 = none, 1 (fastest) – 9 (smallest)
 ```
 
 ### Auto-Configuration
