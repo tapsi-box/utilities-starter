@@ -13,5 +13,5 @@ fun <T> createCompletableFutureFromFuture(future: Future<T>): CompletableFuture<
   }
 }
 
-fun <T> CompletableFuture<T>.toMonoWithCancellation(): Mono<T> = Mono.fromFuture { this }
+fun <T : Any> CompletableFuture<T>.toMonoWithCancellation(): Mono<T> = Mono.fromFuture { this }
   .doFinally { signalType -> if (signalType == SignalType.CANCEL) this.cancel(true) }

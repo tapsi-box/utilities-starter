@@ -53,24 +53,32 @@ class OnPropertyAnyCondition : SpringBootCondition() {
       ConditionOutcome.match(
         ConditionMessage.forCondition(ConditionalOnAnyProperty::class.java, spec)
           .found("property", "properties")
-          .items(ConditionMessage.Style.QUOTE, matchingProperties),
+          .quotedItems(matchingProperties),
       )
     } else if (missingProperties.isNotEmpty()) {
       ConditionOutcome.noMatch(
         ConditionMessage.forCondition(ConditionalOnAnyProperty::class.java, spec)
           .didNotFind("property", "properties")
-          .items(ConditionMessage.Style.QUOTE, missingProperties),
+          .quotedItems(missingProperties),
       )
     } else if (nonMatchingProperties.isNotEmpty()) {
       ConditionOutcome.noMatch(
         ConditionMessage.forCondition(ConditionalOnAnyProperty::class.java, spec)
           .found("different value in property", "different value in properties")
-          .items(ConditionMessage.Style.QUOTE, nonMatchingProperties),
+          .quotedItems(nonMatchingProperties),
       )
     } else {
       ConditionOutcome
         .match(ConditionMessage.forCondition(ConditionalOnAnyProperty::class.java, spec).because("matched"))
     }
+  }
+
+  // Kotlin cannot choose between the Collection and vararg overloads of the JSpecify-annotated
+  // `ItemsBuilder.items` (Spring Boot 4), so call the vararg overload explicitly.
+  @Suppress("detekt.SpreadOperator")
+  private fun ConditionMessage.ItemsBuilder.quotedItems(items: List<String>): ConditionMessage {
+    val quoted = ConditionMessage.Style.QUOTE
+    return items(quoted, *items.toTypedArray())
   }
 
   private class Spec(annotationAttributes: AnnotationAttributes) {
@@ -133,7 +141,7 @@ class OnPropertyAnyCondition : SpringBootCondition() {
       return result.toString()
     }
 
-    private fun getNames(annotationAttributes: Map<String, Any>): Array<String>? {
+    private fun getNames(annotationAttributes: Map<String, Any?>): Array<String>? {
       val value = annotationAttributes["value"] as Array<String>?
       val name = annotationAttributes["name"] as Array<String>?
       Assert.state(

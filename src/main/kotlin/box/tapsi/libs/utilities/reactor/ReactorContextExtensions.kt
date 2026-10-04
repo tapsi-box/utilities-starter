@@ -9,7 +9,7 @@ import reactor.util.context.ContextView
 import java.util.function.Function
 import kotlin.reflect.KClass
 
-fun <TObject : Any, T> monoDeferWithObject(
+fun <TObject : Any, T : Any> monoDeferWithObject(
   clazz: KClass<TObject>,
   monoFactory: Function<in TObject, out Mono<out T>>,
 ): Mono<T> = Mono.deferContextual { ctx ->
@@ -17,7 +17,7 @@ fun <TObject : Any, T> monoDeferWithObject(
   return@deferContextual monoFactory.apply(target)
 }
 
-fun <TObject : Any, T> fluxDeferWithObject(
+fun <TObject : Any, T : Any> fluxDeferWithObject(
   clazz: KClass<TObject>,
   fluxFactory: Function<in TObject, out Publisher<T>>,
 ): Flux<T> = Flux.deferContextual { ctx ->
@@ -25,11 +25,11 @@ fun <TObject : Any, T> fluxDeferWithObject(
   fluxFactory.apply(target)
 }
 
-fun <TObject : Any, T> Mono<T>.withContextualObject(obj: TObject): Mono<T> = this.contextWrite {
+fun <TObject : Any, T : Any> Mono<T>.withContextualObject(obj: TObject): Mono<T> = this.contextWrite {
   it.put(obj.getContextKey(), obj)
 }
 
-fun <TObject : Any, T> Flux<T>.withContextualObject(obj: TObject): Flux<T> = this.contextWrite {
+fun <TObject : Any, T : Any> Flux<T>.withContextualObject(obj: TObject): Flux<T> = this.contextWrite {
   it.put(obj.getContextKey(), obj)
 }
 
