@@ -56,6 +56,17 @@ and formatting tools to accelerate development and maintain consistency across p
 - **ValidatorFactory** for Spring context-based validator management
 - **Auto-configuration** for seamless validator integration
 
+### 🧪 Test Data
+
+- **FixtureHelper** gives a preconfigured [Fixture Monkey](https://naver.github.io/fixture-monkey/) instance
+  (Kotlin support, no `null` values, realistic `Instant` values)
+
+```kotlin
+val fixture = FixtureHelper.getDefaultFixture()
+val user = fixture.giveMeOne<User>()
+val createdAt = FixtureHelper.instantBetween(start, end)
+```
+
 ### 🚀 Spring Boot Integration
 
 - **Auto-configuration** for seamless integration
@@ -447,6 +458,11 @@ This project maintains high code quality standards:
   bean is created.
 - **`jjwt-impl` is included.** You do not need to declare `io.jsonwebtoken:jjwt-impl` in your application.
   `jjwt-jackson` (Jackson 2) is not used anymore.
+- **`FixtureHelper` uses Fixture Monkey.** The unmaintained `com.appmattus.fixture` library is replaced by
+  [Fixture Monkey](https://naver.github.io/fixture-monkey/) (`fixture-monkey-kotlin`). `getDefaultFixture()` now
+  returns a `FixtureMonkey`. Replace `fixture<T>()` with `fixture.giveMeOne<T>()`, and replace the
+  `Generator<Instant>.before/after/between` extensions with `FixtureHelper.instantBefore/instantAfter/instantBetween`.
+  `InstantResolver` is replaced by `InstantArbitraryIntrospector`.
 - **Reactor extensions use non-null type parameters.** Reactor 3.8 uses JSpecify null-safety, so the
   `Mono`/`Flux` extension functions now declare `T : Any`.
 

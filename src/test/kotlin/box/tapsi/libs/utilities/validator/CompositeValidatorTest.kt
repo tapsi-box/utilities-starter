@@ -1,6 +1,7 @@
 package box.tapsi.libs.utilities.validator
 
-import box.tapsi.libs.utilities.FixtureTestHelper
+import box.tapsi.libs.utilities.fixture.FixtureHelper
+import com.navercorp.fixturemonkey.kotlin.giveMeOne
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.spy
 import org.mockito.kotlin.verifyNoInteractions
@@ -8,7 +9,7 @@ import reactor.kotlin.test.test
 
 class CompositeValidatorTest {
 
-  private val fixture = FixtureTestHelper.getDefaultFixture()
+  private val fixture = FixtureHelper.getDefaultFixture()
 
   @Test
   fun `should return empty mono when all validators are valid`() {
@@ -16,7 +17,7 @@ class CompositeValidatorTest {
     val validValidator = spy(ValidatorTestHelper.ValidationTypeValidValidator)
     val validators = listOf(validValidator, validValidator)
     val compositeValidator = CompositeValidator(validators)
-    val order = fixture<ValidatorTestHelper.ValidationType>()
+    val order = fixture.giveMeOne<ValidatorTestHelper.ValidationType>()
 
     // when
     compositeValidator.validate(order)
@@ -34,7 +35,7 @@ class CompositeValidatorTest {
     val invalidValidator = spy(ValidatorTestHelper.ValidationTypeInvalidValidator)
     val validators = listOf(validValidator, invalidValidator)
     val compositeValidator = CompositeValidator(validators)
-    val order = fixture<ValidatorTestHelper.ValidationType>()
+    val order = fixture.giveMeOne<ValidatorTestHelper.ValidationType>()
 
     // when
     compositeValidator.validate(order)
@@ -53,7 +54,7 @@ class CompositeValidatorTest {
     val invalidValidator = spy(ValidatorTestHelper.ValidationTypeInvalidValidator)
     val validators = listOf(invalidValidator, validValidator)
     val compositeValidator = CompositeValidator(validators)
-    val order = fixture<ValidatorTestHelper.ValidationType>()
+    val order = fixture.giveMeOne<ValidatorTestHelper.ValidationType>()
 
     // when
     compositeValidator.validate(order)
@@ -70,7 +71,7 @@ class CompositeValidatorTest {
     // given
     val validators = emptyList<Validator<ValidatorTestHelper.ValidationType>>()
     val compositeValidator = CompositeValidator(validators)
-    val order = fixture<ValidatorTestHelper.ValidationType>()
+    val order = fixture.giveMeOne<ValidatorTestHelper.ValidationType>()
 
     // when
 

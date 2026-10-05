@@ -35,7 +35,7 @@ dependencies {
   implementation("jakarta.annotation:jakarta.annotation-api:3.0.0")
   implementation("io.grpc:grpc-api:1.83.1")
 
-  api("com.appmattus.fixture:fixture:1.2.0")
+  api("com.navercorp.fixturemonkey:fixture-monkey-kotlin:1.2.3")
 
   runtimeOnly("io.jsonwebtoken:jjwt-impl:0.13.0")
 
