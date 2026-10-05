@@ -282,6 +282,7 @@ box:
       security:
         crypto:
           key: "<encryption-key>"
+          legacy-cbc-decryption-enabled: true  # set to false after all data is re-encrypted with AES-GCM
         token:
           jwt:
             secret-key: "<base64-encoded-256-bit-key>"
@@ -458,6 +459,12 @@ This project maintains high code quality standards:
   bean is created.
 - **`jjwt-impl` is included.** You do not need to declare `io.jsonwebtoken:jjwt-impl` in your application.
   `jjwt-jackson` (Jackson 2) is not used anymore.
+- **`EncryptionService` encrypts with AES-GCM.** Version 0.9.x used AES-CBC (`Encryptors.text`, deprecated in
+  Spring Security). New values are encrypted with authenticated AES-GCM. `decrypt` still reads values in the old
+  AES-CBC format. To re-encrypt stored data, decrypt each value and encrypt it again. When all data is re-encrypted,
+  set `box.libs.utilities.security.crypto.legacy-cbc-decryption-enabled` to `false`. Applications on 0.9.x cannot
+  decrypt values that 1.0.x encrypts. The AES key is derived with PBKDF2-HMAC-SHA256 (1,024 iterations), so
+  `crypto.key` must be a long random secret, not a human password.
 - **`FixtureHelper` uses Fixture Monkey.** The unmaintained `com.appmattus.fixture` library is replaced by
   [Fixture Monkey](https://naver.github.io/fixture-monkey/) (`fixture-monkey-kotlin`). `getDefaultFixture()` now
   returns a `FixtureMonkey`. Replace `fixture<T>()` with `fixture.giveMeOne<T>()`, and replace the
