@@ -11,15 +11,7 @@ data class GrpcConsumerProperties(
   val clients: Map<String, GrpcClient> = emptyMap(),
   val provideDefaultChannels: Boolean = true,
 ) {
-  data class GrpcChannel(
-    val host: String,
-    val port: Int,
-    val retryAttempts: Int = 1000,
-    val plaintext: Boolean = true,
-  )
+  data class GrpcChannel(val host: String, val port: Int, val retryAttempts: Int = 1000, val plaintext: Boolean = true)
 
-  data class GrpcClient(
-    val enabled: Boolean = true,
-    val deadline: Duration = Duration.ofSeconds(10),
-  )
+  data class GrpcClient(val enabled: Boolean = true, val deadline: Duration = Duration.ofSeconds(10))
 }

@@ -15,10 +15,7 @@ import org.springframework.context.ApplicationContext
  * @param logger Used to log warnings when no matching validators are found.
  * @param applicationContext Spring's application context used to fetch validator beans.
  */
-class ValidatorFactory(
-  private val logger: Logger,
-  private val applicationContext: ApplicationContext,
-) {
+class ValidatorFactory(private val logger: Logger, private val applicationContext: ApplicationContext) {
   private val validators: MutableMap<String, Validator<*>> by lazy {
     applicationContext.getBeansOfType(Validator::class.java)
       .also { beans ->

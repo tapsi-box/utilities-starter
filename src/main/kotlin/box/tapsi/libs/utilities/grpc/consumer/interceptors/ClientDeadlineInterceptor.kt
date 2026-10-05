@@ -8,9 +8,7 @@ import io.grpc.ClientInterceptor
 import io.grpc.MethodDescriptor
 import java.util.concurrent.TimeUnit
 
-class ClientDeadlineInterceptor(
-  private val client: GrpcConsumerProperties.GrpcClient,
-) : ClientInterceptor {
+class ClientDeadlineInterceptor(private val client: GrpcConsumerProperties.GrpcClient) : ClientInterceptor {
   override fun <ReqT : Any, RespT : Any> interceptCall(
     methodDescriptor: MethodDescriptor<ReqT, RespT>,
     callOptions: CallOptions,

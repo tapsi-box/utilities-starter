@@ -19,16 +19,12 @@ object FixtureHelper {
 
   fun getDefaultFixture(): Fixture = fixture
 
-  fun Generator<Instant>.before(
-    before: Instant,
-  ): Instant = Instant.ofEpochMilli(random.nextLong(0L, before.toEpochMilli()))
+  fun Generator<Instant>.before(before: Instant): Instant =
+    Instant.ofEpochMilli(random.nextLong(0L, before.toEpochMilli()))
 
-  fun Generator<Instant>.after(
-    after: Instant,
-  ): Instant = Instant.ofEpochMilli(random.nextLong(after.toEpochMilli(), Long.MAX_VALUE))
+  fun Generator<Instant>.after(after: Instant): Instant =
+    Instant.ofEpochMilli(random.nextLong(after.toEpochMilli(), Long.MAX_VALUE))
 
-  fun Generator<Instant>.between(
-    start: Instant,
-    end: Instant,
-  ): Instant = Instant.ofEpochMilli(random.nextLong(start.toEpochMilli(), end.toEpochMilli()))
+  fun Generator<Instant>.between(start: Instant, end: Instant): Instant =
+    Instant.ofEpochMilli(random.nextLong(start.toEpochMilli(), end.toEpochMilli()))
 }

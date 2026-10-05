@@ -95,9 +95,8 @@ open class User(
     ;
 
     companion object {
-      fun findByName(
-        platformName: String,
-      ): Platform? = entries.find { it.platformName.equals(platformName, ignoreCase = true) }
+      fun findByName(platformName: String): Platform? =
+        entries.find { it.platformName.equals(platformName, ignoreCase = true) }
     }
   }
 

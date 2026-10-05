@@ -8,9 +8,7 @@ import box.tapsi.libs.utilities.user.User
 import io.grpc.Context
 import io.grpc.Metadata
 
-class UserContextDataProvider(
-  private val properties: ContextProperties,
-) : AbstractContextDataProvider<User>() {
+class UserContextDataProvider(private val properties: ContextProperties) : AbstractContextDataProvider<User>() {
   val requestHeaderUserIdKey: Metadata.Key<String> =
     Metadata.Key.of(properties.grpcHeaderKeys.userIdKey, METADATA_MARSHALLER)
 
@@ -72,9 +70,8 @@ class UserContextDataProvider(
     return userRoleName?.let { User.Role.findByRoleName(roleName = it) }
   }
 
-  private fun findIpFromHeaders(
-    headers: Metadata?,
-  ): String? = headers?.get(requestHeaderUserIpKey)?.let { it.split(",")[0] }
+  private fun findIpFromHeaders(headers: Metadata?): String? =
+    headers?.get(requestHeaderUserIpKey)?.let { it.split(",")[0] }
 
   companion object {
     private val METADATA_MARSHALLER: Metadata.AsciiMarshaller<String> = Metadata.ASCII_STRING_MARSHALLER

@@ -109,7 +109,7 @@ spotless {
         mapOf(
           "indent_size" to 2,
           "ktlint_standard_filename" to "disabled",
-          "ktlint_standard_max-line-length" to "120"
+          "max_line_length" to "120"
         )
       )
     trimTrailingWhitespace()

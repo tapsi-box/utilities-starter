@@ -8,10 +8,7 @@ data class ContextProperties(
   val reactorContextKeys: ReactorContextKeys = ReactorContextKeys(),
   val dataProviders: Map<String, DataProvider> = emptyMap(),
 ) {
-  data class DataProvider(
-    val enabled: Boolean = false,
-    val isUserProvider: Boolean = false,
-  )
+  data class DataProvider(val enabled: Boolean = false, val isUserProvider: Boolean = false)
 
   data class GrpcHeaderKeys(
     val xAgentKey: String = "x-agent",
@@ -22,7 +19,5 @@ data class ContextProperties(
     val userGlobalIdKey: String = "x-agw-user-global-id",
   )
 
-  data class ReactorContextKeys(
-    val userKey: String = "user",
-  )
+  data class ReactorContextKeys(val userKey: String = "user")
 }

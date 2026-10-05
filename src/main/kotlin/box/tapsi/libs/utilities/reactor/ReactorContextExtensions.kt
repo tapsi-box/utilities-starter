@@ -37,14 +37,11 @@ private fun <TObject : Any> TObject.getContextKey(): String = this::class.getCon
 
 private fun <TObject : Any> KClass<TObject>.getContextKey(): String = this.simpleName!!.trim().lowercase()
 
-fun <TObject : Any> ContextView.getOrDefault(
-  clazz: KClass<TObject>,
-): TObject? = this.getOrDefault<TObject>(
+fun <TObject : Any> ContextView.getOrDefault(clazz: KClass<TObject>): TObject? = this.getOrDefault<TObject>(
   clazz.getContextKey(),
   null,
 )
 
-fun <TObject : Any> ContextView.getOrThrow(
-  clazz: KClass<TObject>,
-): TObject = this.getOrDefault<TObject>(clazz.getContextKey(), null)
-  ?: error("No object of type ${clazz.simpleName} found in context")
+fun <TObject : Any> ContextView.getOrThrow(clazz: KClass<TObject>): TObject =
+  this.getOrDefault<TObject>(clazz.getContextKey(), null)
+    ?: error("No object of type ${clazz.simpleName} found in context")

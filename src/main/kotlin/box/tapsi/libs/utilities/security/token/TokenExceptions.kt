@@ -4,29 +4,22 @@ import box.tapsi.libs.utilities.ErrorCodeString
 import box.tapsi.libs.utilities.TapsiException
 
 sealed class TokenException(message: String) : TapsiException(message) {
-  class InvalidTokenException private constructor(
-    message: String,
-    val token: String,
-    val userId: String,
-  ) : TokenException(message) {
+  class InvalidTokenException private constructor(message: String, val token: String, val userId: String) :
+    TokenException(message) {
     private var errorCode: ErrorCodeString = ErrorCodeString.UnknownError
 
     override fun getErrorCodeString(): ErrorCodeString = errorCode
 
     companion object {
-      fun createCorruptedTokenException(
-        token: String,
-        userId: String = "",
-      ): InvalidTokenException = InvalidTokenException("CORRUPTED_TOKEN", token, userId).apply {
-        errorCode = ErrorCode.CorruptedToken
-      }
+      fun createCorruptedTokenException(token: String, userId: String = ""): InvalidTokenException =
+        InvalidTokenException("CORRUPTED_TOKEN", token, userId).apply {
+          errorCode = ErrorCode.CorruptedToken
+        }
 
-      fun createExpiredTokenException(
-        token: String,
-        userId: String = "",
-      ): InvalidTokenException = InvalidTokenException("TOKEN_EXPIRED", token, userId).apply {
-        errorCode = ErrorCode.TokenExpired
-      }
+      fun createExpiredTokenException(token: String, userId: String = ""): InvalidTokenException =
+        InvalidTokenException("TOKEN_EXPIRED", token, userId).apply {
+          errorCode = ErrorCode.TokenExpired
+        }
     }
   }
 

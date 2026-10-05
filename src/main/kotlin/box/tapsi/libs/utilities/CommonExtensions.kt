@@ -26,9 +26,7 @@ inline fun <reified T : Any> Any.castOrThrow(): T = T::class.cast(this)
  * @return the object cast to the specified type.
  * @throws ClassCastException if the object cannot be cast to the specified type.
  */
-fun <T : Any> Any.castOrThrow(
-  kClass: KClass<T>,
-): T = kClass.cast(this)
+fun <T : Any> Any.castOrThrow(kClass: KClass<T>): T = kClass.cast(this)
 
 /**
  * Determines if the method's return type is a reactive publisher such as `Mono` or `Flux`.
@@ -152,10 +150,8 @@ fun Class<out Any>.getOriginalClass(): Class<out Any> = ClassUtils.getUserClass(
  * @throws ClassNotFoundException if the class cannot be found or loaded
  * @throws LinkageError if the class has a dependency on another class that cannot be found or loaded
  */
-fun getClassByFullQualifiedName(
-  className: String,
-  classLoader: ClassLoader?,
-): Class<out Any> = ClassUtils.forName(className, classLoader)
+fun getClassByFullQualifiedName(className: String, classLoader: ClassLoader?): Class<out Any> =
+  ClassUtils.forName(className, classLoader)
 
 /**
  * Retrieves a method from the specified class if it is available with the given name and parameter types.
@@ -165,8 +161,5 @@ fun getClassByFullQualifiedName(
  * @param parameterTypes the parameter types of the method
  * @return the method if available, or null if it does not exist
  */
-fun getMethodIfAvailable(
-  clazz: Class<out Any>,
-  methodName: String,
-  vararg parameterTypes: Class<*>,
-): Method? = ClassUtils.getMethodIfAvailable(clazz, methodName, *parameterTypes)
+fun getMethodIfAvailable(clazz: Class<out Any>, methodName: String, vararg parameterTypes: Class<*>): Method? =
+  ClassUtils.getMethodIfAvailable(clazz, methodName, *parameterTypes)

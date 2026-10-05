@@ -25,12 +25,7 @@ interface TokenService {
    *   [tools.jackson.databind.ObjectMapper].
    * @return A compact, URL-safe signed JWT string.
    */
-  fun createJwt(
-    expiryDurationInSeconds: Long,
-    subject: String?,
-    key: String,
-    valueObject: Any,
-  ): String
+  fun createJwt(expiryDurationInSeconds: Long, subject: String?, key: String, valueObject: Any): String
 
   /**
    * Parses and verifies a signed JWT, returning the value stored under [key] deserialized

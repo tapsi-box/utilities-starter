@@ -26,20 +26,14 @@ import java.util.zip.Deflater
  * ```
  */
 @ConfigurationProperties("box.libs.utilities.security")
-data class SecurityProperties(
-  val crypto: Crypto = Crypto(),
-  val token: Token = Token(),
-) {
+data class SecurityProperties(val crypto: Crypto = Crypto(), val token: Token = Token()) {
   /**
    * Properties governing JWT token creation and parsing.
    *
    * @property jwt JWT signing configuration.
    * @property compression Payload compression settings.
    */
-  data class Token(
-    val jwt: Jwt = Jwt(),
-    val compression: Compression = Compression(),
-  ) {
+  data class Token(val jwt: Jwt = Jwt(), val compression: Compression = Compression()) {
     /**
      * JWT signing configuration.
      *
@@ -47,9 +41,7 @@ data class SecurityProperties(
      *   Must decode to at least 256 bits (32 bytes). **Must be overridden via external
      *   configuration — the default value `"CHANGE_ME"` will cause startup failures.**
      */
-    data class Jwt(
-      val secretKey: String = "CHANGE_ME",
-    )
+    data class Jwt(val secretKey: String = "CHANGE_ME")
 
     /**
      * Configuration for automatic payload compression within JWT claims.
@@ -84,7 +76,5 @@ data class SecurityProperties(
    * @property key The encryption key used by the crypto service. **Must be overridden via
    *   external configuration — the default value `"CHANGE_ME"` is not secure.**
    */
-  data class Crypto(
-    val key: String = "CHANGE_ME",
-  )
+  data class Crypto(val key: String = "CHANGE_ME")
 }

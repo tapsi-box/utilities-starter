@@ -52,12 +52,7 @@ open class TokenServiceImpl(
   private val compressionThreshold: Int = securityProperties.token.compression.thresholdBytes
   private val compressionLevel: Int = securityProperties.token.compression.level
 
-  override fun createJwt(
-    expiryDurationInSeconds: Long,
-    subject: String?,
-    key: String,
-    valueObject: Any,
-  ): String {
+  override fun createJwt(expiryDurationInSeconds: Long, subject: String?, key: String, valueObject: Any): String {
     val claimValue = compress(valueObject)
     val builder = Jwts.builder()
       .json(jwtSerializer)
