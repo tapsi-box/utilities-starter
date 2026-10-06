@@ -82,7 +82,7 @@ val createdAt = FixtureHelper.instantBetween(start, end)
 <dependency>
     <groupId>box.tapsi.libs</groupId>
     <artifactId>utilities-starter</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
