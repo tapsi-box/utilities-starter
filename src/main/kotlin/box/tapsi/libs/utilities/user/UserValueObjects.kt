@@ -106,6 +106,7 @@ open class User(
     ExternalEmbeddedApi("EXTERNAL_EMBEDDED_API"),
     CabPassenger("PASSENGER"),
     CabDriver("DRIVER"),
+    CabCorporatePanel("CORPORATE"),
     TakerPanel("DELIVERY_TAKER_PANEL"),
     ;
 
