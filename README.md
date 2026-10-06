@@ -1,8 +1,8 @@
 # Tapsi Utilities Starter
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Kotlin](https://img.shields.io/badge/kotlin-1.9.23-blue.svg)](https://kotlinlang.org)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.5-brightgreen.svg)](https://spring.io/projects/spring-boot)
+[![Kotlin](https://img.shields.io/badge/kotlin-2.2%2B-blue.svg)](https://kotlinlang.org)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.x-brightgreen.svg)](https://spring.io/projects/spring-boot)
 [![Maven Central](https://img.shields.io/maven-central/v/box.tapsi.libs/utilities-starter)](https://search.maven.org/artifact/box.tapsi.libs/utilities-starter)
 
 Common Infrastructure Utilities for Spring Boot Applications
@@ -56,6 +56,17 @@ and formatting tools to accelerate development and maintain consistency across p
 - **ValidatorFactory** for Spring context-based validator management
 - **Auto-configuration** for seamless validator integration
 
+### 🧪 Test Data
+
+- **FixtureHelper** gives a preconfigured [Fixture Monkey](https://naver.github.io/fixture-monkey/) instance
+  (Kotlin support, no `null` values, realistic `Instant` values)
+
+```kotlin
+val fixture = FixtureHelper.getDefaultFixture()
+val user = fixture.giveMeOne<User>()
+val createdAt = FixtureHelper.instantBetween(start, end)
+```
+
 ### 🚀 Spring Boot Integration
 
 - **Auto-configuration** for seamless integration
@@ -71,7 +82,7 @@ and formatting tools to accelerate development and maintain consistency across p
 <dependency>
     <groupId>box.tapsi.libs</groupId>
     <artifactId>utilities-starter</artifactId>
-    <version>0.9.8</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -271,6 +282,7 @@ box:
       security:
         crypto:
           key: "<encryption-key>"
+          legacy-cbc-decryption-enabled: true  # set to false after all data is re-encrypted with AES-GCM
         token:
           jwt:
             secret-key: "<base64-encoded-256-bit-key>"
@@ -413,13 +425,14 @@ This project maintains high code quality standards:
 
 ### Core Dependencies
 
-- **Spring Framework 6.2.10** - Core Spring functionality
-- **Spring Boot 3.5.5** - Auto-configuration support
-- **Reactor Core 3.7.9** - Reactive programming support
-- **Spring Security Crypto 6.5.3** - Security utilities
-- **JJWT 0.12.5** - JWT handling
-- **Jackson 2.17.0** - JSON processing
-- **Micrometer 1.15.3** - Metrics support
+- **Spring Framework 7.0** - Core Spring functionality
+- **Spring Boot 4.1** - Auto-configuration support
+- **Reactor Core 3.8** - Reactive programming support
+- **Spring Security Crypto 7.1** - Security utilities
+- **JJWT 0.13** - JWT handling
+- **Jackson 3.1** (`tools.jackson`) - JSON processing
+- **Micrometer 1.17** - Metrics support
+- **gRPC 1.83** - gRPC client utilities
 
 ### Test Dependencies
 
@@ -430,9 +443,35 @@ This project maintains high code quality standards:
 
 ## Version Compatibility
 
-| Library Version | Spring Boot | Kotlin | Java |
-|-----------------|-------------|--------|------|
-| 0.0.9           | 3.5.x       | 1.9.23 | 17+  |
+| Library Version | Spring Boot | Kotlin | Jackson | Java |
+|-----------------|-------------|--------|---------|------|
+| 1.0.x           | 4.x         | 2.2+   | 3.x     | 17+  |
+| 0.9.x           | 3.5.x       | 1.9+   | 2.x     | 17+  |
+
+## Migrating from 0.9.x (Spring Boot 3) to 1.0.x (Spring Boot 4)
+
+- **Spring Boot 4 and Spring Framework 7 are required.** Use 0.9.x for Spring Boot 3 applications.
+- **Kotlin 2.2 or newer is required.** The library is compiled with a newer Kotlin compiler, but it targets
+  Kotlin 2.2 language and API versions, so it works with all Kotlin versions that Spring Boot 4 supports.
+- **Jackson 3 is required for `TokenService`.** `TokenServiceImpl` now takes a Jackson 3
+  `tools.jackson.databind.ObjectMapper`. The auto-configuration uses the `JsonMapper` bean that
+  Spring Boot 4 creates. If your application defines only a Jackson 2 `ObjectMapper` bean, no `TokenService`
+  bean is created.
+- **`jjwt-impl` is included.** You do not need to declare `io.jsonwebtoken:jjwt-impl` in your application.
+  `jjwt-jackson` (Jackson 2) is not used anymore.
+- **`EncryptionService` encrypts with AES-GCM.** Version 0.9.x used AES-CBC (`Encryptors.text`, deprecated in
+  Spring Security). New values are encrypted with authenticated AES-GCM. `decrypt` still reads values in the old
+  AES-CBC format. To re-encrypt stored data, decrypt each value and encrypt it again. When all data is re-encrypted,
+  set `box.libs.utilities.security.crypto.legacy-cbc-decryption-enabled` to `false`. Applications on 0.9.x cannot
+  decrypt values that 1.0.x encrypts. The AES key is derived with PBKDF2-HMAC-SHA256 (1,024 iterations), so
+  `crypto.key` must be a long random secret, not a human password.
+- **`FixtureHelper` uses Fixture Monkey.** The unmaintained `com.appmattus.fixture` library is replaced by
+  [Fixture Monkey](https://naver.github.io/fixture-monkey/) (`fixture-monkey-kotlin`). `getDefaultFixture()` now
+  returns a `FixtureMonkey`. Replace `fixture<T>()` with `fixture.giveMeOne<T>()`, and replace the
+  `Generator<Instant>.before/after/between` extensions with `FixtureHelper.instantBefore/instantAfter/instantBetween`.
+  `InstantResolver` is replaced by `InstantArbitraryIntrospector`.
+- **Reactor extensions use non-null type parameters.** Reactor 3.8 uses JSpecify null-safety, so the
+  `Mono`/`Flux` extension functions now declare `T : Any`.
 
 ## License
 

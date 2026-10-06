@@ -10,67 +10,43 @@ import java.util.concurrent.TimeUnit
 
 @Suppress("TooManyFunctions")
 class TimeOperatorImpl : TimeOperator {
-  override fun addToCurrentTime(
-    offset: Long,
-    timeUnit: TimeUnit,
-  ): Instant = Instant.now().plusMillis(timeUnit.toMillis(offset))
+  override fun addToCurrentTime(offset: Long, timeUnit: TimeUnit): Instant =
+    Instant.now().plusMillis(timeUnit.toMillis(offset))
 
   override fun getCurrentTime(): Instant = Instant.now()
 
-  override fun addToInstant(
-    time: Instant,
-    offset: Long,
-    timeUnit: TimeUnit,
-  ): Instant = time.plusMillis(timeUnit.toMillis(offset))
+  override fun addToInstant(time: Instant, offset: Long, timeUnit: TimeUnit): Instant =
+    time.plusMillis(timeUnit.toMillis(offset))
 
-  override fun subtractFromInstant(
-    time: Instant,
-    offset: Long,
-    timeUnit: TimeUnit,
-  ): Instant = time.minusMillis(timeUnit.toMillis(offset))
+  override fun subtractFromInstant(time: Instant, offset: Long, timeUnit: TimeUnit): Instant =
+    time.minusMillis(timeUnit.toMillis(offset))
 
-  override fun isBeforeInstant(
-    time: Instant,
-    otherTime: Instant,
-  ): Boolean = time.isBefore(otherTime)
+  override fun isBeforeInstant(time: Instant, otherTime: Instant): Boolean = time.isBefore(otherTime)
 
-  override fun getDurationBetween(
-    startTime: Instant,
-    endTime: Instant,
-  ): Duration = Duration.between(startTime, endTime)
+  override fun getDurationBetween(startTime: Instant, endTime: Instant): Duration = Duration.between(startTime, endTime)
 
   override fun getElapsedTimeFrom(startTime: Instant): Duration = Duration.between(startTime, getCurrentTime())
 
-  override fun getStartOfTheDayTime(
-    time: Instant,
-    timezone: SupportedTimezone,
-  ): Instant = LocalDate.ofInstant(time, timezone.asZoneId())
-    .atStartOfDay(timezone.asZoneId())
-    .toInstant()
+  override fun getStartOfTheDayTime(time: Instant, timezone: SupportedTimezone): Instant =
+    LocalDate.ofInstant(time, timezone.asZoneId())
+      .atStartOfDay(timezone.asZoneId())
+      .toInstant()
 
-  override fun convertLocalDateToInstant(
-    localDate: LocalDate,
-    timezone: SupportedTimezone,
-  ): Instant = localDate.atStartOfDay(timezone.asZoneId()).toInstant()
+  override fun convertLocalDateToInstant(localDate: LocalDate, timezone: SupportedTimezone): Instant =
+    localDate.atStartOfDay(timezone.asZoneId()).toInstant()
 
-  override fun convertLocalDateTimeToInstant(
-    localDateTime: LocalDateTime,
-    timezone: SupportedTimezone,
-  ): Instant = localDateTime.atZone(timezone.asZoneId()).toInstant()
+  override fun convertLocalDateTimeToInstant(localDateTime: LocalDateTime, timezone: SupportedTimezone): Instant =
+    localDateTime.atZone(timezone.asZoneId()).toInstant()
 
   override fun getCurrentLocalDate(timezone: SupportedTimezone): LocalDate = LocalDate.now(timezone.asZoneId())
 
   override fun getCurrentDayOfWeek(timezone: SupportedTimezone): DayOfWeek = getCurrentLocalDate(timezone).dayOfWeek
 
-  override fun isBeforeCurrentLocalTime(
-    time: LocalTime,
-    timezone: SupportedTimezone,
-  ): Boolean = time.isBefore(getCurrentLocalTime(timezone))
+  override fun isBeforeCurrentLocalTime(time: LocalTime, timezone: SupportedTimezone): Boolean =
+    time.isBefore(getCurrentLocalTime(timezone))
 
-  override fun isAfterCurrentLocalTime(
-    time: LocalTime,
-    timezone: SupportedTimezone,
-  ): Boolean = time.isAfter(getCurrentLocalTime(timezone))
+  override fun isAfterCurrentLocalTime(time: LocalTime, timezone: SupportedTimezone): Boolean =
+    time.isAfter(getCurrentLocalTime(timezone))
 
   override fun isAfterInstant(time: Instant, otherTime: Instant): Boolean = time.isAfter(otherTime)
 

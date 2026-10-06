@@ -5,10 +5,7 @@ import box.tapsi.libs.utilities.format.formatters.PropertyFormatter
 import org.slf4j.Logger
 import org.springframework.context.ApplicationContext
 
-class PropertyFormatterFactory(
-  private val applicationContext: ApplicationContext,
-  private val logger: Logger,
-) {
+class PropertyFormatterFactory(private val applicationContext: ApplicationContext, private val logger: Logger) {
   private val formatters: Map<String, PropertyFormatter<*>> by lazy {
     applicationContext.getBeansOfType(PropertyFormatter::class.java)
       .also { beans ->

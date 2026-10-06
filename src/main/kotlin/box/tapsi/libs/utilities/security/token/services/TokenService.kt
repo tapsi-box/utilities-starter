@@ -22,15 +22,10 @@ interface TokenService {
    * @param subject Optional JWT `sub` claim. Pass `null` to omit it.
    * @param key The claim name under which [valueObject] is stored in the JWT payload.
    * @param valueObject The value to embed. Must be serializable by the configured Jackson
-   *   [com.fasterxml.jackson.databind.ObjectMapper].
+   *   [tools.jackson.databind.ObjectMapper].
    * @return A compact, URL-safe signed JWT string.
    */
-  fun createJwt(
-    expiryDurationInSeconds: Long,
-    subject: String?,
-    key: String,
-    valueObject: Any,
-  ): String
+  fun createJwt(expiryDurationInSeconds: Long, subject: String?, key: String, valueObject: Any): String
 
   /**
    * Parses and verifies a signed JWT, returning the value stored under [key] deserialized

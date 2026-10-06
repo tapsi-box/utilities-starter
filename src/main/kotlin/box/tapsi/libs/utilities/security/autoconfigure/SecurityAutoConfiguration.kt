@@ -8,19 +8,18 @@ import box.tapsi.libs.utilities.security.hash.services.HashServiceImpl
 import box.tapsi.libs.utilities.security.token.services.TokenService
 import box.tapsi.libs.utilities.security.token.services.TokenServiceImpl
 import box.tapsi.libs.utilities.time.TimeOperator
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.slf4j.Logger
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.security.crypto.keygen.KeyGenerators
 import org.springframework.security.crypto.keygen.StringKeyGenerator
+import tools.jackson.databind.ObjectMapper
 
-@AutoConfiguration(after = [JacksonAutoConfiguration::class])
+@AutoConfiguration(afterName = ["org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration"])
 @EnableConfigurationProperties(SecurityProperties::class)
 class SecurityAutoConfiguration {
 

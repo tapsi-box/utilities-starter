@@ -226,6 +226,13 @@
       "defaultValue": "CHANGE_ME"
     },
     {
+      "name": "box.libs.utilities.security.crypto.legacy-cbc-decryption-enabled",
+      "type": "java.lang.Boolean",
+      "sourceType": "box.tapsi.libs.utilities.security.SecurityProperties$Crypto",
+      "description": "Whether to decrypt values in the legacy AES-CBC format when AES-GCM decryption fails. New values are always encrypted with AES-GCM. Set to false after all stored values are re-encrypted.",
+      "defaultValue": true
+    },
+    {
       "name": "box.libs.utilities.security.token.jwt.secret-key",
       "type": "java.lang.String",
       "sourceType": "box.tapsi.libs.utilities.security.SecurityProperties$Token$Jwt",

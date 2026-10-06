@@ -4,9 +4,7 @@ import box.tapsi.libs.utilities.context.providers.ContextDataProvider
 import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationContext
 
-class ContextDataProviderFactory(
-  private val applicationContext: ApplicationContext,
-) {
+class ContextDataProviderFactory(private val applicationContext: ApplicationContext) {
   private val logger = LoggerFactory.getLogger(this::class.java)
   private val contextDataProviders = mutableMapOf<String, ContextDataProvider<*>>()
   private var initialized = false

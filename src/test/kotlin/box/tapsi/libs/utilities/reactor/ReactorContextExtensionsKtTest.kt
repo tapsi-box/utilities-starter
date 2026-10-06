@@ -1,6 +1,7 @@
 package box.tapsi.libs.utilities.reactor
 
-import box.tapsi.libs.utilities.FixtureTestHelper
+import box.tapsi.libs.utilities.fixture.FixtureHelper
+import com.navercorp.fixturemonkey.kotlin.giveMeOne
 import org.junit.jupiter.api.Test
 import reactor.core.publisher.Mono
 import reactor.kotlin.test.test
@@ -8,12 +9,12 @@ import reactor.kotlin.test.test
 class ReactorContextExtensionsKtTest {
   data class TestObject(val name: String)
 
-  private val fixture = FixtureTestHelper.getDefaultFixture()
+  private val fixture = FixtureHelper.getDefaultFixture()
 
   @Test
   fun `monoWithObject should return Mono with object from context`() {
     // given
-    val testObject = fixture<TestObject>()
+    val testObject = fixture.giveMeOne<TestObject>()
 
     // when
 
@@ -31,7 +32,7 @@ class ReactorContextExtensionsKtTest {
   @Test
   fun `fluxWithObject should return Flux with object from context`() {
     // given
-    val testObject = fixture<TestObject>()
+    val testObject = fixture.giveMeOne<TestObject>()
 
     // when
 

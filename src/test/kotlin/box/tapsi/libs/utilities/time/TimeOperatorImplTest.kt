@@ -1,6 +1,9 @@
 package box.tapsi.libs.utilities.time
 
-import box.tapsi.libs.utilities.FixtureTestHelper
+import box.tapsi.libs.utilities.fixture.FixtureHelper
+import com.navercorp.fixturemonkey.kotlin.giveMeBuilder
+import com.navercorp.fixturemonkey.kotlin.giveMeOne
+import net.jqwik.api.Arbitraries
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -17,7 +20,7 @@ class TimeOperatorImplTest {
   @InjectMocks
   private lateinit var timeOperator: TimeOperatorImpl
 
-  private val fixture = FixtureTestHelper.getDefaultFixture()
+  private val fixture = FixtureHelper.getDefaultFixture()
 
   @BeforeEach
   fun init() {
@@ -27,13 +30,13 @@ class TimeOperatorImplTest {
   @Test
   fun `should get duration difference between two time instant successfully`() {
     // given
-    val startTime = fixture<Instant>()
+    val startTime = fixture.giveMeOne<Instant>()
 
-    val difference = fixture<Duration> {
-      filter<Duration> {
-        filter { it.seconds > 1 }
-      }
-    }
+    val difference = Duration.ofSeconds(
+      fixture.giveMeBuilder<Long>()
+        .set("$", Arbitraries.longs().between(2L, Duration.ofDays(3650).seconds))
+        .sample(),
+    )
 
     val endTime = timeOperator.addToInstant(startTime, difference.toSeconds(), TimeUnit.SECONDS)
 

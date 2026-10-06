@@ -10,9 +10,7 @@ import io.grpc.ServerCallHandler
 import io.grpc.ServerInterceptor
 import io.grpc.Status
 
-class WorkingContextInterceptor(
-  private val workingContextService: WorkingContextService,
-) : ServerInterceptor {
+class WorkingContextInterceptor(private val workingContextService: WorkingContextService) : ServerInterceptor {
   override fun <ReqT, RespT> interceptCall(
     call: ServerCall<ReqT, RespT>?,
     headers: Metadata?,

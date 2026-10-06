@@ -18,9 +18,7 @@ import reactor.kotlin.core.publisher.toMono
  * @param T The type of property to be formatted
  * @property formatters The list of formatters to be applied in sequence
  */
-class CompositePropertyFormatter<T : Any>(
-  private val formatters: List<PropertyFormatter<T>>,
-) : PropertyFormatter<T> {
+class CompositePropertyFormatter<T : Any>(private val formatters: List<PropertyFormatter<T>>) : PropertyFormatter<T> {
   /**
    * Applies all formatters in sequence to the input property.
    *

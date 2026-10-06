@@ -1,16 +1,19 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+
 plugins {
-  kotlin("jvm") version "1.9.23"
-  kotlin("plugin.spring") version "1.9.23"
+  kotlin("jvm") version "2.4.20"
+  kotlin("plugin.spring") version "2.4.20"
   id("io.spring.dependency-management") version "1.1.7"
 
-  id("com.vanniktech.maven.publish") version "0.34.0"
-  id("com.diffplug.spotless") version "7.2.1"
-  id("io.gitlab.arturbosch.detekt") version "1.23.6"
+  id("com.vanniktech.maven.publish") version "0.37.0"
+  id("com.diffplug.spotless") version "8.10.3"
+  id("io.gitlab.arturbosch.detekt") version "1.23.8"
   `java-library`
 }
 
 group = "box.tapsi.libs"
-version = "0.9.8"
+version = "1.0.0"
 description = "utilities-starter"
 
 repositories {
@@ -18,37 +21,50 @@ repositories {
 }
 
 dependencies {
-  implementation("org.springframework:spring-context:6.2.10")
-  implementation("org.springframework.boot:spring-boot-autoconfigure:3.5.5")
-  implementation("io.projectreactor:reactor-core:3.7.9")
-  implementation("org.springframework.security:spring-security-crypto:6.5.3")
-  implementation("io.jsonwebtoken:jjwt-api:0.12.5")
-  implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.19.2")
-  implementation("io.jsonwebtoken:jjwt-jackson:0.12.5")
-  implementation("io.micrometer:micrometer-core:1.15.3")
-  implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:1.2.3")
-  implementation("io.projectreactor.addons:reactor-extra:3.5.2")
-  implementation("org.slf4j:slf4j-api:2.0.17")
+  implementation("org.springframework:spring-context:7.0.9")
+  implementation("org.springframework.boot:spring-boot-autoconfigure:4.1.1")
+  implementation("io.projectreactor:reactor-core:3.8.7")
+  implementation("org.springframework.security:spring-security-crypto:7.1.1")
+  implementation("io.jsonwebtoken:jjwt-api:0.13.0")
+  implementation("tools.jackson.core:jackson-databind:3.1.5")
+  implementation("tools.jackson.module:jackson-module-kotlin:3.1.5")
+  implementation("io.micrometer:micrometer-core:1.17.1")
+  implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:1.3.2")
+  implementation("io.projectreactor.addons:reactor-extra:3.6.1")
+  implementation("org.slf4j:slf4j-api:2.0.18")
   implementation("jakarta.annotation:jakarta.annotation-api:3.0.0")
-  implementation("io.grpc:grpc-api:1.71.0")
+  implementation("io.grpc:grpc-api:1.83.1")
 
-  api("com.appmattus.fixture:fixture:1.2.0")
+  api("com.navercorp.fixturemonkey:fixture-monkey-kotlin:1.2.3")
 
-  testImplementation("org.springframework.boot:spring-boot-starter-test:3.5.5")
-  testImplementation("org.jetbrains.kotlin:kotlin-test-junit5:1.9.23")
-  testImplementation("io.projectreactor:reactor-test:3.7.9")
-  testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
+  runtimeOnly("io.jsonwebtoken:jjwt-impl:0.13.0")
+
+  testImplementation("org.springframework.boot:spring-boot-starter-test:4.1.1")
+  testImplementation("org.springframework.boot:spring-boot-jackson:4.1.1")
+  testImplementation(kotlin("test"))
+  testImplementation("io.projectreactor:reactor-test:3.8.7")
+  testImplementation("org.mockito.kotlin:mockito-kotlin:6.4.0")
 
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-  testRuntimeOnly("io.jsonwebtoken:jjwt-impl:0.12.5")
-
 }
 
-
+java {
+  sourceCompatibility = JavaVersion.VERSION_17
+  targetCompatibility = JavaVersion.VERSION_17
+}
 
 kotlin {
+  // Keep the published metadata readable by Kotlin 2.2+ (the Spring Boot 4 baseline),
+  // while the library is compiled with a newer Kotlin compiler.
+  coreLibrariesVersion = "2.2.21"
   compilerOptions {
-    freeCompilerArgs.addAll("-Xjsr305=strict")
+    jvmTarget.set(JvmTarget.JVM_17)
+    languageVersion.set(KotlinVersion.KOTLIN_2_2)
+    apiVersion.set(KotlinVersion.KOTLIN_2_2)
+    freeCompilerArgs.addAll(
+      "-Xjsr305=strict",
+      "-Xannotation-default-target=param-property",
+    )
   }
 }
 
@@ -93,7 +109,7 @@ spotless {
         mapOf(
           "indent_size" to 2,
           "ktlint_standard_filename" to "disabled",
-          "ktlint_standard_max-line-length" to "120"
+          "max_line_length" to "120"
         )
       )
     trimTrailingWhitespace()
@@ -110,14 +126,18 @@ detekt {
 }
 
 tasks.register("verifyReadmeContent") {
+  val readmeFile = file("README.md")
+  val expectedGroup = project.group.toString()
+  val expectedVersion = project.version.toString()
+  inputs.file(readmeFile)
+
   doLast {
-    val readmeFile = file("README.md")
     val content = readmeFile.readText()
 
     // List of checks
     val checks = listOf(
-      Check("group ID", """<groupId>${project.group}</groupId>"""),
-      Check("version", """<version>${project.version}</version>"""),
+      Check("group ID", """<groupId>$expectedGroup</groupId>"""),
+      Check("version", """<version>$expectedVersion</version>"""),
     )
 
     val errors = checks.mapNotNull { check ->

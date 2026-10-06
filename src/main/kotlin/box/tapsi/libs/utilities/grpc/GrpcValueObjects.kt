@@ -19,9 +19,7 @@ data class XAgentHeaderInfo(
     private const val OS_VERSION_INDEX = 5
     private const val ADVERTISING_ID_INDEX = 16
 
-    fun fromString(
-      xAgent: String,
-    ): XAgentHeaderInfo = xAgent.split(SPLITTING_DELIMITER)
+    fun fromString(xAgent: String): XAgentHeaderInfo = xAgent.split(SPLITTING_DELIMITER)
       .map { it.takeIf { it.isNotBlank() } }
       .let { split ->
         XAgentHeaderInfo(

@@ -1,11 +1,13 @@
 package box.tapsi.libs.utilities
 
+import box.tapsi.libs.utilities.fixture.FixtureHelper
+import com.navercorp.fixturemonkey.kotlin.giveMeOne
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class CommonExtensionsKtTest {
-  private val fixture = FixtureTestHelper.getDefaultFixture()
+  private val fixture = FixtureHelper.getDefaultFixture()
 
   @Test
   fun `toOrdinal should return the correct ordinal number`() {
@@ -73,7 +75,7 @@ class CommonExtensionsKtTest {
   @Test
   fun `cast should return the same instance when cast to the same type`() {
     // given
-    val incentive = fixture<String>()
+    val incentive = fixture.giveMeOne<String>()
 
     // when
     val result = incentive.castOrThrow<String>()
@@ -85,7 +87,7 @@ class CommonExtensionsKtTest {
   @Test
   fun `cast should throw ClassCastException when cast to a different type`() {
     // given
-    val incentive = fixture<String>()
+    val incentive = fixture.giveMeOne<String>()
 
     // when
     val exception = Assertions.assertThrows(ClassCastException::class.java) {

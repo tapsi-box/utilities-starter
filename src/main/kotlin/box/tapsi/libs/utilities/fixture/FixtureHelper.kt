@@ -1,34 +1,46 @@
 package box.tapsi.libs.utilities.fixture
 
-import box.tapsi.libs.utilities.fixture.resolvers.InstantResolver
-import com.appmattus.kotlinfixture.Fixture
-import com.appmattus.kotlinfixture.config.Generator
-import com.appmattus.kotlinfixture.decorator.nullability.NeverNullStrategy
-import com.appmattus.kotlinfixture.decorator.nullability.nullabilityStrategy
-import com.appmattus.kotlinfixture.decorator.optional.NeverOptionalStrategy
-import com.appmattus.kotlinfixture.decorator.optional.optionalStrategy
-import com.appmattus.kotlinfixture.kotlinFixture
+import box.tapsi.libs.utilities.fixture.introspectors.InstantArbitraryIntrospector
+import com.navercorp.fixturemonkey.FixtureMonkey
+import com.navercorp.fixturemonkey.api.generator.DefaultNullInjectGenerator
+import com.navercorp.fixturemonkey.api.generator.NullInjectGenerator
+import com.navercorp.fixturemonkey.api.random.Randoms
+import com.navercorp.fixturemonkey.kotlin.KotlinPlugin
 import java.time.Instant
 
+/**
+ * Test-data helpers based on [Fixture Monkey](https://naver.github.io/fixture-monkey/).
+ *
+ * The default [FixtureMonkey] uses the Kotlin plugin, never generates `null` values, and
+ * generates [Instant] values with [InstantArbitraryIntrospector].
+ *
+ * Example:
+ * ```kotlin
+ * val fixture = FixtureHelper.getDefaultFixture()
+ * val user = fixture.giveMeOne<User>()
+ * val admin = fixture.giveMeBuilder<User>().setExp(User::role, Role.ADMIN).sample()
+ * ```
+ */
 object FixtureHelper {
-  private val fixture: Fixture = kotlinFixture {
-    nullabilityStrategy(NeverNullStrategy)
-    optionalStrategy(NeverOptionalStrategy)
-    resolvers.addFirst(InstantResolver())
-  }
+  private val fixture: FixtureMonkey = createFixture()
 
-  fun getDefaultFixture(): Fixture = fixture
+  /** Returns the shared default [FixtureMonkey]. */
+  fun getDefaultFixture(): FixtureMonkey = fixture
 
-  fun Generator<Instant>.before(
-    before: Instant,
-  ): Instant = Instant.ofEpochMilli(random.nextLong(0L, before.toEpochMilli()))
+  /** Creates a new [FixtureMonkey] with the default configuration. Use it when you need a separate instance. */
+  fun createFixture(): FixtureMonkey = FixtureMonkey.builder()
+    .plugin(KotlinPlugin())
+    .defaultNullInjectGenerator(NullInjectGenerator { DefaultNullInjectGenerator.NOT_NULL_INJECT })
+    .pushExactTypeArbitraryIntrospector(Instant::class.java, InstantArbitraryIntrospector())
+    .build()
 
-  fun Generator<Instant>.after(
-    after: Instant,
-  ): Instant = Instant.ofEpochMilli(random.nextLong(after.toEpochMilli(), Long.MAX_VALUE))
+  /** Returns a random [Instant] between the epoch and [before] (exclusive). */
+  fun instantBefore(before: Instant): Instant = instantBetween(Instant.EPOCH, before)
 
-  fun Generator<Instant>.between(
-    start: Instant,
-    end: Instant,
-  ): Instant = Instant.ofEpochMilli(random.nextLong(start.toEpochMilli(), end.toEpochMilli()))
+  /** Returns a random [Instant] between [after] and the maximum epoch millisecond (exclusive). */
+  fun instantAfter(after: Instant): Instant = instantBetween(after, Instant.ofEpochMilli(Long.MAX_VALUE))
+
+  /** Returns a random [Instant] between [start] (inclusive) and [end] (exclusive). */
+  fun instantBetween(start: Instant, end: Instant): Instant =
+    Instant.ofEpochMilli(Randoms.current().nextLong(start.toEpochMilli(), end.toEpochMilli()))
 }

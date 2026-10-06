@@ -11,9 +11,7 @@ import reactor.core.publisher.Mono
  * @param TInput The type of input that this validator processes.
  * @param validators A list of [Validator] instances to apply sequentially for input validation.
  */
-class CompositeValidator<TInput : Any>(
-  private val validators: List<Validator<TInput>>,
-) : Validator<TInput> {
+class CompositeValidator<TInput : Any>(private val validators: List<Validator<TInput>>) : Validator<TInput> {
   override fun validate(input: TInput): Mono<Void> = validators.fold(Mono.empty()) { acc, validator ->
     acc.then(Mono.defer { validator.validate(input) })
   }

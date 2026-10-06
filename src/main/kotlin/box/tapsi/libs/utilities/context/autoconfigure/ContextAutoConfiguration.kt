@@ -42,9 +42,8 @@ class ContextAutoConfiguration {
   )
   @ConditionalOnMissingBean
   @Bean
-  fun registerUserContextDataProvider(
-    contextProperties: ContextProperties,
-  ): UserContextDataProvider = UserContextDataProvider(contextProperties)
+  fun registerUserContextDataProvider(contextProperties: ContextProperties): UserContextDataProvider =
+    UserContextDataProvider(contextProperties)
 
   @ConditionalOnProperty(
     value = ["box.libs.utilities.context.data-providers.trace-id.enabled"],

@@ -4,15 +4,14 @@ import box.tapsi.libs.utilities.security.SecurityProperties
 import box.tapsi.libs.utilities.security.token.TokenException
 import box.tapsi.libs.utilities.time.TimeOperator
 import box.tapsi.libs.utilities.time.toDate
-import com.fasterxml.jackson.databind.ObjectMapper
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.UnsupportedJwtException
-import io.jsonwebtoken.jackson.io.JacksonSerializer
 import io.jsonwebtoken.security.Keys
 import io.micrometer.core.annotation.Timed
 import org.slf4j.Logger
+import tools.jackson.databind.ObjectMapper
 import java.io.ByteArrayOutputStream
 import java.util.Base64
 import java.util.concurrent.TimeUnit
@@ -44,20 +43,19 @@ open class TokenServiceImpl(
 ) : TokenService {
   private val secretKey: SecretKey =
     Keys.hmacShaKeyFor(Base64.getDecoder().decode(securityProperties.token.jwt.secretKey))
-  private val jwtParser = Jwts.parser().verifyWith(secretKey).build()
+  private val jwtSerializer = JacksonJwtSerializer(objectMapper)
+  private val jwtParser = Jwts.parser()
+    .json(JacksonJwtDeserializer(objectMapper))
+    .verifyWith(secretKey)
+    .build()
   private val compressionEnabled: Boolean = securityProperties.token.compression.enabled
   private val compressionThreshold: Int = securityProperties.token.compression.thresholdBytes
   private val compressionLevel: Int = securityProperties.token.compression.level
 
-  override fun createJwt(
-    expiryDurationInSeconds: Long,
-    subject: String?,
-    key: String,
-    valueObject: Any,
-  ): String {
+  override fun createJwt(expiryDurationInSeconds: Long, subject: String?, key: String, valueObject: Any): String {
     val claimValue = compress(valueObject)
     val builder = Jwts.builder()
-      .json(JacksonSerializer(objectMapper))
+      .json(jwtSerializer)
       .claim(key, claimValue)
       .issuedAt(timeOperator.getCurrentTime().toDate())
       .expiration(

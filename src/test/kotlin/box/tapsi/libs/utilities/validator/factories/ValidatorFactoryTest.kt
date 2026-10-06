@@ -1,9 +1,11 @@
 package box.tapsi.libs.utilities.validator.factories
 
-import box.tapsi.libs.utilities.FixtureTestHelper
+import box.tapsi.libs.utilities.fixture.FixtureHelper
 import box.tapsi.libs.utilities.validator.CompositeValidator
 import box.tapsi.libs.utilities.validator.Validator
 import box.tapsi.libs.utilities.validator.ValidatorTestHelper
+import com.navercorp.fixturemonkey.kotlin.giveMeBuilder
+import com.navercorp.fixturemonkey.kotlin.giveMeOne
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -27,7 +29,7 @@ class ValidatorFactoryTest {
   @Mock
   private lateinit var applicationContext: ApplicationContext
 
-  private val fixture = FixtureTestHelper.getDefaultFixture()
+  private val fixture = FixtureHelper.getDefaultFixture()
 
   @BeforeEach
   fun init() {
@@ -37,9 +39,10 @@ class ValidatorFactoryTest {
   @Test
   fun `should ignore validator if the type is not match`() {
     // given
-    val beanNames = fixture<Array<String>> {
-      repeatCount { 4 }
-    }
+    val beanNames = fixture.giveMeBuilder<Array<String>>()
+      .size("$", 4)
+      .setPostCondition { it.toSet().size == 4 }
+      .sample()
     val beans = listOf(
       spy(ValidatorTestHelper.ValidationTypeValidValidator),
       spy(ValidatorTestHelper.ValidationTypeInvalidValidator),
@@ -47,7 +50,7 @@ class ValidatorFactoryTest {
       spy(ValidatorTestHelper.AnotherValidationTypeInvalidValidator),
     )
 
-    val deliveryRequest = fixture<ValidatorTestHelper.AnotherValidationType>()
+    val deliveryRequest = fixture.giveMeOne<ValidatorTestHelper.AnotherValidationType>()
 
     // when
     whenever(applicationContext.getBeansOfType(Validator::class.java)).thenReturn(
@@ -67,9 +70,10 @@ class ValidatorFactoryTest {
   @Test
   fun `should throw error when there is no registered bean of type ValidationTypeValidator`() {
     // given
-    val beanNames = fixture<Array<String>> {
-      repeatCount { 4 }
-    }
+    val beanNames = fixture.giveMeBuilder<Array<String>>()
+      .size("$", 4)
+      .setPostCondition { it.toSet().size == 4 }
+      .sample()
 
     // when
     whenever(applicationContext.getBeansOfType(Validator::class.java)).thenReturn(emptyMap())

@@ -5,11 +5,11 @@ import reactor.core.publisher.Mono
 import reactor.util.context.Context
 import java.util.UUID
 
-fun <T> Mono<T>.addTraceIdToReactorContext(): Mono<T> = this.contextWrite {
+fun <T : Any> Mono<T>.addTraceIdToReactorContext(): Mono<T> = this.contextWrite {
   putTraceIdInContext(it)
 }
 
-fun <T> Flux<T>.addTraceIdToReactorContext(): Flux<T> = this.contextWrite {
+fun <T : Any> Flux<T>.addTraceIdToReactorContext(): Flux<T> = this.contextWrite {
   putTraceIdInContext(it)
 }
 
