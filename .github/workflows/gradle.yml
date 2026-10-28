@@ -56,13 +56,31 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
+      # Hand-written notes in release-notes/<version>.md (for example release-notes/1.0.0.md)
+      # come first, then the commit list. A release with breaking commits (`type!:` or
+      # `BREAKING CHANGE:`) must have a notes file; otherwise this step stops the release
+      # before anything is published.
       - name: Generate Release Notes
         if: startsWith(github.ref, 'refs/tags/')
         run: |
-          echo "## What's Changed" > RELEASE_NOTES.md
+          VERSION="${GITHUB_REF_NAME#v}"
+          NOTES_FILE="release-notes/${VERSION}.md"
+          PREVIOUS_TAG="$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || true)"
+
+          : > RELEASE_NOTES.md
+          if [ -f "$NOTES_FILE" ]; then
+            cat "$NOTES_FILE" >> RELEASE_NOTES.md
+            printf '\n\n' >> RELEASE_NOTES.md
+          elif [ -n "$PREVIOUS_TAG" ] \
+            && grep -qE '^[a-z]+(\([^)]*\))?!:|^BREAKING[ -]CHANGE:' <<< "$(git log "${PREVIOUS_TAG}..HEAD" --format=%B)"; then
+            echo "::error file=${NOTES_FILE}::This release has breaking changes but no ${NOTES_FILE}. Add the file with the upgrade notes, then tag a commit that contains it."
+            exit 1
+          fi
+
+          echo "## What's Changed" >> RELEASE_NOTES.md
           echo "" >> RELEASE_NOTES.md
-          if git tag | grep .; then
-            git log $(git describe --tags --abbrev=0 HEAD^)..HEAD --pretty=format:"* %s" >> RELEASE_NOTES.md
+          if [ -n "$PREVIOUS_TAG" ]; then
+            git log "${PREVIOUS_TAG}..HEAD" --pretty=format:"* %s" >> RELEASE_NOTES.md
           else
             echo "* Initial release" >> RELEASE_NOTES.md
           fi
